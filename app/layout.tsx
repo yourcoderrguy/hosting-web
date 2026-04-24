@@ -5,9 +5,12 @@ export const metadata = {
   description: "Enterprise Digital Architecture",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    // Add suppressHydrationWarning right here
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
         {children}
