@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Check, X, Server, MessageSquare, Target, Menu, Key } from 'lucide-react';
+import { ArrowRight, Check, X, Server, MessageSquare, Target, Menu, Key, Layers } from 'lucide-react';
 
 export default function SignetLandingPage() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -32,7 +32,7 @@ export default function SignetLandingPage() {
     setTimeout(() => {
       const whatsappNumber = "2348000000000"; // Replace with your actual WhatsApp number
       
-      const message = `*NEW SIGNET LEAD*%0A%0AHello Precious,%0A%0A*Name:* ${formData.name}%0A*Business:* ${formData.business}%0A*Email:* ${formData.email}%0A%0AI am ready to dominate my market. I want to deploy the *${selectedPlan}*. Let's blueprint the architecture.`;
+      const message = `*NEW SIGNET LEAD*%0A%0AHello Precious,%0A%0A*Name:* ${formData.name}%0A*Business:* ${formData.business}%0A*Email:* ${formData.email}%0A%0AI am ready to scale my business. I want to deploy the *${selectedPlan}*. Let's blueprint the architecture.`;
       
       window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
       
@@ -59,14 +59,13 @@ export default function SignetLandingPage() {
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-3 cursor-pointer">
             <div className="w-9 h-9 bg-emerald-500 flex items-center justify-center rounded-md shadow-[0_0_15px_rgba(16,185,129,0.3)]">
-              {/* Signet Key Icon representing the seal of authority */}
               <Key size={20} className="text-zinc-950" strokeWidth={2.5} />
             </div>
             <span className="text-2xl font-bold tracking-tight text-white">Signet<span className="text-emerald-500">.</span></span>
           </div>
           
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
-            <a href="#arsenal" className="hover:text-emerald-400 transition-colors">The Arsenal</a>
+            <a href="#framework" className="hover:text-emerald-400 transition-colors">Our Framework</a>
             <a href="#infrastructure" className="hover:text-emerald-400 transition-colors">Infrastructure</a>
             <button onClick={() => openModal('Header Contact - Strategy Call')} className="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-emerald-500/50 text-white px-5 py-2.5 rounded-md transition-all shadow-sm">
               Demand a Strategy Call
@@ -85,7 +84,7 @@ export default function SignetLandingPage() {
               initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
               className="md:hidden absolute top-full left-0 w-full bg-zinc-950 border-b border-zinc-800 py-6 px-6 flex flex-col gap-6 shadow-2xl"
             >
-              <a href="#arsenal" onClick={() => setIsMobileMenuOpen(false)} className="text-zinc-300 font-medium text-lg">The Arsenal</a>
+              <a href="#framework" onClick={() => setIsMobileMenuOpen(false)} className="text-zinc-300 font-medium text-lg">Our Framework</a>
               <a href="#infrastructure" onClick={() => setIsMobileMenuOpen(false)} className="text-zinc-300 font-medium text-lg">Infrastructure</a>
               <button onClick={() => openModal('Mobile Header - Strategy Call')} className="w-full bg-emerald-500 text-zinc-950 font-bold py-4 rounded-md text-lg">
                 Demand a Strategy Call
@@ -133,10 +132,10 @@ export default function SignetLandingPage() {
       </section>
 
       {/* --- FEATURES SECTION --- */}
-      <section id="arsenal" className="py-24 bg-zinc-950 border-t border-zinc-900 relative z-10 w-full">
+      <section id="framework" className="py-24 bg-zinc-950 border-t border-zinc-900 relative z-10 w-full">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center md:text-left mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">Your Unfair Advantage.</h2>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">The Signet Framework.</h2>
             <p className="text-zinc-400 text-lg">We don't just write code. We architect dominance in your market.</p>
           </div>
           
@@ -175,17 +174,17 @@ export default function SignetLandingPage() {
             {/* TIER 1: Starter Landing Page */}
             <div className="bg-zinc-900/30 border border-zinc-800 p-6 rounded-xl flex flex-col hover:border-zinc-700 transition-colors">
               <div className="mb-6">
-                <h3 className="text-xl font-bold text-zinc-50">The Fast-Track Launch</h3>
+                <h3 className="text-xl font-bold text-zinc-50">The Market Entry</h3>
                 <p className="text-zinc-500 text-xs mt-2">Dominate your niche immediately with a high-speed, ruthless landing page designed to capture leads.</p>
               </div>
               <div className="text-3xl font-bold text-zinc-50 mb-6">₦70k</div>
               <ul className="space-y-3 mb-8 flex-grow text-zinc-300 text-xs">
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> High-Converting Single Page Build</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> <span className="font-semibold text-white">Includes Free .com.ng Domain</span></li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> 1-Year Premium NVMe Hosting</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Secure Corporate Business Email</li>
+                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Conversion Landing Page Build</li>
+                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> <span className="font-semibold text-white">Free .com.ng Registration</span></li>
+                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Premium NVMe Hosting</li>
+                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Corporate Business Email</li>
               </ul>
-              <button onClick={() => openModal('The Fast-Track Launch (₦70k)')} className="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 rounded-md transition-all text-sm">
+              <button onClick={() => openModal('The Market Entry (₦70k)')} className="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 rounded-md transition-all text-sm">
                 Claim Your Market
               </button>
             </div>
@@ -198,11 +197,10 @@ export default function SignetLandingPage() {
               </div>
               <div className="text-3xl font-bold text-zinc-50 mb-6">₦150k</div>
               <ul className="space-y-3 mb-8 flex-grow text-zinc-300 text-xs">
-                <li className="flex items-start gap-2 font-semibold text-white"><Check size={16} className="text-emerald-500 shrink-0"/> Multi-Page Corporate Architecture</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Google-Ranked SEO Foundation</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Lead Generation & Contact Workflows</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> 1-Year Premium NVMe Hosting</li>
-                <li className="flex items-start gap-2 opacity-50"><X size={16} className="text-zinc-600 shrink-0"/> Domain Registration Not Included</li>
+                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Multi-Page Corporate Architecture</li>
+                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Premium NVMe Hosting Included</li>
+                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Advanced Lead Capture Workflows</li>
+                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Google-Ready SEO Foundation</li>
               </ul>
               <button onClick={() => openModal('The Authority Platform (₦150k)')} className="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 rounded-md transition-all text-sm">
                 Establish Authority
@@ -212,21 +210,20 @@ export default function SignetLandingPage() {
             {/* TIER 3: The AI Engine (Highlight) */}
             <div className="bg-zinc-900 border border-emerald-500/60 p-6 rounded-xl flex flex-col relative shadow-[0_0_30px_rgba(16,185,129,0.1)] lg:-translate-y-4">
               <div className="absolute top-0 right-4 bg-emerald-500 text-zinc-950 text-[10px] font-black px-2 py-1 rounded-b-md uppercase tracking-widest">
-                The Ultimate Advantage
+                The Ultimate Edge
               </div>
               <div className="mb-6 mt-2">
-                <h3 className="text-xl font-bold text-zinc-50">The Automated Closer</h3>
+                <h3 className="text-xl font-bold text-zinc-50">The AI Revenue Engine</h3>
                 <p className="text-zinc-400 text-xs mt-2">The complete business upgrade. We build the site, host it securely, and deploy the AI to aggressively close your leads 24/7.</p>
               </div>
               <div className="text-3xl font-bold text-emerald-400 mb-6">₦250k</div>
               <ul className="space-y-3 mb-8 flex-grow text-zinc-200 text-xs">
                 <li className="flex items-start gap-2 font-semibold text-white"><Check size={16} className="text-emerald-400 shrink-0"/> Everything in The Authority Platform</li>
                 <li className="flex items-start gap-2"><Check size={16} className="text-emerald-400 shrink-0"/> Custom AI WhatsApp Negotiator</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-400 shrink-0"/> Hands-Free Automated Booking</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-400 shrink-0"/> 1-Year Premium NVMe Hosting</li>
-                <li className="flex items-start gap-2 opacity-50"><X size={16} className="text-zinc-500 shrink-0"/> Domain Registration Not Included</li>
+                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-400 shrink-0"/> Hands-Free Automated Booking System</li>
+                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-400 shrink-0"/> Priority Engineering Support</li>
               </ul>
-              <button onClick={() => openModal('The Automated Closer (₦250k)')} className="w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold py-3 rounded-md shadow-lg transition-all text-sm">
+              <button onClick={() => openModal('The AI Revenue Engine (₦250k)')} className="w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold py-3 rounded-md shadow-lg transition-all text-sm">
                 Automate Your Revenue
               </button>
             </div>
@@ -234,16 +231,15 @@ export default function SignetLandingPage() {
             {/* TIER 4: SaaS & MVP Dev */}
             <div className="bg-zinc-900/30 border border-zinc-800 p-6 rounded-xl flex flex-col hover:border-zinc-700 transition-colors">
               <div className="mb-6">
-                <h3 className="text-xl font-bold text-zinc-50">SaaS / MVP Engineering</h3>
+                <h3 className="text-xl font-bold text-zinc-50">Custom SaaS / MVP</h3>
                 <p className="text-zinc-500 text-xs mt-2">You have the vision. We have the code. Complex software built for absolute market takeover.</p>
               </div>
               <div className="text-3xl font-bold text-zinc-50 mb-6">Custom</div>
               <ul className="space-y-3 mb-8 flex-grow text-zinc-300 text-xs">
                 <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Heavy-Duty Next.js / React Web Apps</li>
                 <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Sharetribe Marketplaces & Portals</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Elite Fractional CTO Support</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Enterprise NVMe Cloud Hosting</li>
-                <li className="flex items-start gap-2 opacity-50"><X size={16} className="text-zinc-600 shrink-0"/> Domain Registration Not Included</li>
+                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Proprietary AI Model Integrations</li>
+                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Dedicated Cloud Infrastructure</li>
               </ul>
               <button onClick={() => openModal('SaaS & MVP Custom Quote')} className="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 rounded-md transition-all text-sm">
                 Request Engineering Audit
