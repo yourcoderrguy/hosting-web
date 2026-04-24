@@ -30,7 +30,7 @@ export default function MagenLandingPage() {
     setIsConnecting(true);
     
     setTimeout(() => {
-      const whatsappNumber = "2348000000000"; // Replace with your actual WhatsApp number
+      const whatsappNumber = "2348112476891"; // Replace with your actual WhatsApp number
       
       const message = `*NEW MAGEN LEAD*%0A%0AHello Precious,%0A%0A*Name:* ${formData.name}%0A*Business:* ${formData.business}%0A*Email:* ${formData.email}%0A%0AI clicked your ad and I am ready to deploy the *${selectedPlan}*. Let's discuss the setup.`;
       
