@@ -24,8 +24,8 @@ export default function MagenLandingPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Highly Documented WhatsApp Routing Logic
-  const handleConnect = (e) => {
+// Highly Documented WhatsApp Routing Logic
+  const handleConnect = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsConnecting(true);
     
@@ -42,7 +42,7 @@ export default function MagenLandingPage() {
     }, 800);
   };
 
-  const openModal = (planName) => {
+const openModal = (planName: string) => {
     setSelectedPlan(planName);
     setIsModalOpen(true);
     setIsMobileMenuOpen(false); 
