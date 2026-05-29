@@ -48,7 +48,7 @@ export default function LandingPage() {
           </div>
           <span className="logo-text">OP5 Technologies</span>
         </div>
-        <a className="header-cta" href="https://wa.me/2349000000000?text=Hi%20Precious%2C%20I%27d%20like%20to%20chat%20with%20an%20engineer." target="_blank" rel="noopener noreferrer">
+        <a className="header-cta" href="https://wa.me/2348112476891?text=Hi%20Precious%2C%20I%27d%20like%20to%20chat%20with%20an%20engineer." target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
           </svg>
@@ -213,7 +213,7 @@ export default function LandingPage() {
                 <li><svg className="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>Direct WhatsApp Routing</li>
                 <li><svg className="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>Backend SEO Structuring</li>
               </ul>
-              <a href="https://wa.me/2349000000000?text=Hi%20Precious%2C%20I%20want%20to%20discuss%20the%20Corporate%20Foundation%20setup." target="_blank" rel="noopener noreferrer" className="btn-pkg">
+              <a href="https://wa.me/2348112476891?text=Hi%20Precious%2C%20I%20want%20to%20discuss%20the%20Corporate%20Foundation%20setup." target="_blank" rel="noopener noreferrer" className="btn-pkg">
                 <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
                 Discuss This Setup
               </a>
@@ -238,7 +238,7 @@ export default function LandingPage() {
                 <li className="plus-item"><svg className="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>Automated Lead Vault</li>
                 <li className="plus-item"><svg className="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>Smart Human Handoff</li>
               </ul>
-              <a href="https://wa.me/2349000000000?text=Hi%20Precious%2C%20I%20want%20to%20build%20the%20AI%20Revenue%20Engine." target="_blank" rel="noopener noreferrer" className="btn-pkg btn-featured">
+              <a href="https://wa.me/2348112476891?text=Hi%20Precious%2C%20I%20want%20to%20build%20the%20AI%20Revenue%20Engine." target="_blank" rel="noopener noreferrer" className="btn-pkg btn-featured">
                 <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
                 Build My AI Engine
               </a>
@@ -263,7 +263,7 @@ export default function LandingPage() {
                 <li className="plus-item"><svg className="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>Day-One Traffic Injection</li>
                 <li className="plus-item"><svg className="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>Priority Architecture Support</li>
               </ul>
-              <a href="https://wa.me/2349000000000?text=Hi%20Precious%2C%20I%20want%20to%20apply%20for%20the%20Market%20Dominator%20Enterprise%20package." target="_blank" rel="noopener noreferrer" className="btn-pkg">
+              <a href="https://wa.me/2348112476891?text=Hi%20Precious%2C%20I%20want%20to%20apply%20for%20the%20Market%20Dominator%20Enterprise%20package." target="_blank" rel="noopener noreferrer" className="btn-pkg">
                 <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
                 Apply For Enterprise
               </a>
@@ -273,7 +273,7 @@ export default function LandingPage() {
           {/* Final CTA */}
           <div style={{ textAlign: 'center', marginTop: '72px' }} className="reveal">
             <p style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '24px' }}>Not sure which tier is right for you? Let's figure it out together.</p>
-            <a href="https://wa.me/2349000000000?text=Hi%20Precious%2C%20I%27m%20not%20sure%20which%20package%20is%20right%20for%20me.%20Can%20we%20talk%3F" target="_blank" rel="noopener noreferrer" className="btn-wa">
+            <a href="https://wa.me/2348112476891?text=Hi%20Precious%2C%20I%27m%20not%20sure%20which%20package%20is%20right%20for%20me.%20Can%20we%20talk%3F" target="_blank" rel="noopener noreferrer" className="btn-wa">
               <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
               Talk to Precious Directly
             </a>
@@ -292,7 +292,7 @@ export default function LandingPage() {
           <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: '16px' }}>OP5 Technologies</span>
         </div>
         <p className="footer-tagline">We don't build websites. We build Sales Engines.</p>
-        <a href="https://wa.me/2349000000000?text=Hi%20Precious%2C%20I%27d%20like%20to%20learn%20more%20about%20OP5%20Technologies." target="_blank" rel="noopener noreferrer" className="footer-cta">
+        <a href="https://wa.me/2348112476891?text=Hi%20Precious%2C%20I%27d%20like%20to%20learn%20more%20about%20OP5%20Technologies." target="_blank" rel="noopener noreferrer" className="footer-cta">
           <svg viewBox="0 0 24 24" width="16" height="16" stroke="#fff" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
           </svg>
