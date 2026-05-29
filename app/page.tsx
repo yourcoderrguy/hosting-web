@@ -52,7 +52,8 @@ function TestimonialVideo({ src, title, subtitle }: { src: string; title: string
   const videoRef     = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const idRef        = useRef<string>(`vid-${++_vidCounter}`);
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying]       = useState(false);
+  const [thumbReady, setThumbReady] = useState(false);
   const ctx = useContext(VideoContext);
 
   useEffect(() => {
@@ -61,6 +62,24 @@ function TestimonialVideo({ src, title, subtitle }: { src: string; title: string
     ctx.register(idRef.current, v);
     return () => ctx.unregister(idRef.current);
   }, [ctx]);
+
+  // Seek to 0.5s on metadata load → browser paints that frame as the visible thumbnail
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    const onMeta = () => {
+      v.currentTime = 0.5;
+    };
+    const onSeeked = () => {
+      setThumbReady(true);
+    };
+    v.addEventListener('loadedmetadata', onMeta);
+    v.addEventListener('seeked', onSeeked);
+    return () => {
+      v.removeEventListener('loadedmetadata', onMeta);
+      v.removeEventListener('seeked', onSeeked);
+    };
+  }, []);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -88,7 +107,7 @@ function TestimonialVideo({ src, title, subtitle }: { src: string; title: string
         <video
           ref={videoRef}
           src={src}
-          preload="none"
+          preload="metadata"
           playsInline
           controls={playing}
           style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' }}
@@ -96,9 +115,18 @@ function TestimonialVideo({ src, title, subtitle }: { src: string; title: string
           onPause={() => setPlaying(false)}
           onEnded={() => setPlaying(false)}
         />
+        {/* Skeleton shown while thumbnail loads */}
+        {!thumbReady && !playing && (
+          <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg,#0d1a14,#0a1518)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+            <div style={{ width:40, height:40, borderRadius:'50%', border:'3px solid rgba(16,185,129,0.2)', borderTopColor:'#10b981', animation:'spin 0.8s linear infinite' }} />
+          </div>
+        )}
         {!playing && (
-          <button onClick={handlePlay} aria-label={`Play ${title} testimonial`}
-            style={{ position:'absolute', inset:0, display:'flex', alignItems:'center', justifyContent:'center', background:'rgba(0,0,0,0.45)', border:'none', cursor:'pointer' }}>
+          <button
+            onClick={thumbReady ? handlePlay : undefined}
+            aria-label={`Play ${title} testimonial`}
+            style={{ position:'absolute', inset:0, display:'flex', alignItems:'center', justifyContent:'center', background: thumbReady ? 'rgba(0,0,0,0.3)' : 'transparent', border:'none', cursor: thumbReady ? 'pointer' : 'default', opacity: thumbReady ? 1 : 0, transition:'opacity 0.4s ease' }}
+          >
             <div style={{ width:56, height:56, borderRadius:'50%', background:'linear-gradient(135deg,#10b981,#06b6d4)', display:'flex', alignItems:'center', justifyContent:'center', boxShadow:'0 0 32px rgba(16,185,129,0.5)' }}>
               <svg viewBox="0 0 24 24" style={{ width:24, height:24, fill:'white', transform:'translateX(2px)' }}><polygon points="5,3 19,12 5,21" /></svg>
             </div>
@@ -518,6 +546,7 @@ export default function LandingPage() {
         <style>{`
           @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.4} }
           @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+          @keyframes spin   { to{transform:rotate(360deg)} }
           * { box-sizing: border-box; }
           body { margin: 0; }
         `}</style>
