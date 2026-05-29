@@ -1,323 +1,305 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Check, X, Server, MessageSquare, Target, Menu, Key, Layers } from 'lucide-react';
+import React, { useEffect } from 'react';
 
-export default function SignetLandingPage() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState('');
-  const [isConnecting, setIsConnecting] = useState(false);
+export default function LandingPage() {
   
-  const [formData, setFormData] = useState({ 
-    name: '', 
-    email: '',
-    business: '' 
-  });
-
-  // Handle Navbar Glass Effect
+  // Handled the exact scroll animation logic you provided
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+    
+    reveals.forEach(el => io.observe(el));
+
+    const links = document.querySelectorAll('a[href^="#"]');
+    links.forEach(a => {
+      a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if (href) {
+          const t = document.querySelector(href);
+          if (t) {
+            e.preventDefault();
+            t.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
+
+    return () => {
+      io.disconnect();
+    };
   }, []);
 
-  // Highly Documented WhatsApp Routing Logic
-  const handleConnect = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsConnecting(true);
-    
-    setTimeout(() => {
-      const whatsappNumber = "2348000000000"; // Replace with your actual WhatsApp number
-      
-      const message = `*NEW SIGNET LEAD*%0A%0AHello Precious,%0A%0A*Name:* ${formData.name}%0A*Business:* ${formData.business}%0A*Email:* ${formData.email}%0A%0AI am ready to scale my business. I want to deploy the *${selectedPlan}*. Let's blueprint the architecture.`;
-      
-      window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
-      
-      setIsConnecting(false);
-      setIsModalOpen(false);
-      setFormData({ name: '', email: '', business: '' });
-    }, 800);
-  };
-
-  const openModal = (planName: string) => {
-    setSelectedPlan(planName);
-    setIsModalOpen(true);
-    setIsMobileMenuOpen(false); 
-  };
-
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-50 font-sans selection:bg-emerald-500/30 selection:text-emerald-100 flex flex-col relative w-full overflow-x-hidden">
-      
-      {/* Background Glows */}
-      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-emerald-900/15 blur-[150px] rounded-full pointer-events-none z-0"></div>
-
-      {/* --- NAVIGATION --- */}
-      <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-zinc-950/90 backdrop-blur-xl border-b border-zinc-800/60 py-4' : 'bg-transparent py-6'}`}>
-        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-          <div className="flex items-center gap-3 cursor-pointer">
-            <div className="w-9 h-9 bg-emerald-500 flex items-center justify-center rounded-md shadow-[0_0_15px_rgba(16,185,129,0.3)]">
-              <Key size={20} className="text-zinc-950" strokeWidth={2.5} />
-            </div>
-            <span className="text-2xl font-bold tracking-tight text-white">Signet<span className="text-emerald-500">.</span></span>
+    <>
+      {/* HEADER */}
+      <header>
+        <div className="logo">
+          <div className="logo-icon">
+            <svg viewBox="0 0 24 24">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            </svg>
           </div>
-          
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
-            <a href="#framework" className="hover:text-emerald-400 transition-colors">Our Framework</a>
-            <a href="#infrastructure" className="hover:text-emerald-400 transition-colors">Infrastructure</a>
-            <button onClick={() => openModal('Header Contact - Strategy Call')} className="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-emerald-500/50 text-white px-5 py-2.5 rounded-md transition-all shadow-sm">
-              Demand a Strategy Call
-            </button>
-          </div>
-
-          <button className="md:hidden text-zinc-400 hover:text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+          <span className="logo-text">OP5 Technologies</span>
         </div>
+        <a className="header-cta" href="https://wa.me/2349000000000?text=Hi%20Precious%2C%20I%27d%20like%20to%20chat%20with%20an%20engineer." target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>Chat with an Engineer</span>
+        </a>
+      </header>
 
-        {/* Mobile Nav */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div 
-              initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-              className="md:hidden absolute top-full left-0 w-full bg-zinc-950 border-b border-zinc-800 py-6 px-6 flex flex-col gap-6 shadow-2xl"
-            >
-              <a href="#framework" onClick={() => setIsMobileMenuOpen(false)} className="text-zinc-300 font-medium text-lg">Our Framework</a>
-              <a href="#infrastructure" onClick={() => setIsMobileMenuOpen(false)} className="text-zinc-300 font-medium text-lg">Infrastructure</a>
-              <button onClick={() => openModal('Mobile Header - Strategy Call')} className="w-full bg-emerald-500 text-zinc-950 font-bold py-4 rounded-md text-lg">
-                Demand a Strategy Call
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
-
-      {/* --- HERO SECTION --- */}
-      <section className="relative z-10 pt-48 pb-24 px-6 text-center flex flex-col items-center justify-center">
-        <div className="max-w-4xl mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 mb-8 backdrop-blur-sm"
-          >
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span className="text-[11px] font-bold tracking-[0.2em] text-emerald-300 uppercase">Elite Web Engineering & AI Automation</span>
-          </motion.div>
-          
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-            className="text-5xl md:text-7xl font-black tracking-tighter mb-8 leading-[1.1] text-white"
-          >
-            Stop Paying for Dead Websites. <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-600">Build an Automated Sales Engine.</span>
-          </motion.h1>
-          
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="text-lg md:text-xl text-zinc-400 mb-12 max-w-2xl mx-auto leading-relaxed"
-          >
-            Most websites are just digital brochures that bleed money. We engineer high-performance platforms, back them with military-grade hosting, and inject custom AI that relentlessly closes deals on your WhatsApp while you sleep.
-          </motion.p>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row justify-center items-center gap-4 w-full sm:w-auto"
-          >
-            <button onClick={() => openModal('Hero Section - Initiate Build')} className="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold py-4 px-10 rounded-md shadow-[0_0_30px_rgba(16,185,129,0.3)] transition-all flex items-center justify-center gap-2 text-lg">
-              Initiate Your Build <ArrowRight size={20} />
-            </button>
-          </motion.div>
+      {/* HERO */}
+      <section className="hero" id="home">
+        <div className="hero-bg">
+          <div className="hero-orb1"></div>
+          <div className="hero-orb2"></div>
         </div>
-      </section>
+        <div className="hero-badge reveal">
+          {/* <div className="pulse-dot"></div> */}
+          Next-Gen AI Automation
+        </div>
+        <h1 className="reveal" style={{ transitionDelay: '0.1s' }}>
+          Stop Buying Basic Websites.<br />
+          <span className="gradient-text">Build a Sales Engine.</span>
+        </h1>
+        <p className="hero-sub reveal" style={{ transitionDelay: '0.2s' }}>
+          Your business leaks money every time you step away from your phone. We connect lightning-fast web architecture directly to a custom AI WhatsApp agent that haggles and closes deals 24/7.
+        </p>
+        <a href="#packages" className="btn-primary reveal" style={{ transitionDelay: '0.3s' }}>
+          <svg viewBox="0 0 24 24">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          See The Packages
+        </a>
 
-      {/* --- FEATURES SECTION --- */}
-      <section id="framework" className="py-24 bg-zinc-950 border-t border-zinc-900 relative z-10 w-full">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center md:text-left mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">The Signet Framework.</h2>
-            <p className="text-zinc-400 text-lg">We don't just write code. We architect dominance in your market.</p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-zinc-900/40 border border-zinc-800 p-8 rounded-xl hover:border-emerald-500/50 transition-colors duration-300">
-              <div className="w-14 h-14 bg-emerald-500/10 rounded-xl flex items-center justify-center mb-6"><Target className="text-emerald-400" size={24} /></div>
-              <h3 className="text-xl font-bold mb-3 text-white">Conversion-First Engineering</h3>
-              <p className="text-zinc-400 text-sm leading-relaxed">Whether it is a ruthless landing page or a complex SaaS MVP, we design platforms driven by human psychology to do one thing: turn your traffic into cash.</p>
-            </div>
-
-            <div className="bg-zinc-900/40 border border-zinc-800 p-8 rounded-xl hover:border-emerald-500/50 transition-colors duration-300">
-              <div className="w-14 h-14 bg-emerald-500/10 rounded-xl flex items-center justify-center mb-6"><MessageSquare className="text-emerald-400" size={24} /></div>
-              <h3 className="text-xl font-bold mb-3 text-white">The 24/7 AI Closer</h3>
-              <p className="text-zinc-400 text-sm leading-relaxed">Imagine a sales rep that never sleeps and responds in seconds. We deploy custom AI directly into your WhatsApp to crush objections and secure payments instantly.</p>
-            </div>
-
-            <div className="bg-zinc-900/40 border border-zinc-800 p-8 rounded-xl hover:border-emerald-500/50 transition-colors duration-300">
-              <div className="w-14 h-14 bg-emerald-500/10 rounded-xl flex items-center justify-center mb-6"><Server className="text-emerald-400" size={24} /></div>
-              <h3 className="text-xl font-bold mb-3 text-white">Vault-Level Infrastructure</h3>
-              <p className="text-zinc-400 text-sm leading-relaxed">Total dominance requires total uptime. Every platform we build is hosted on our lightning-fast NVMe servers, fortified with automated backups and corporate email.</p>
+        <div className="vsl-container reveal" style={{ transitionDelay: '0.4s' }}>
+          <div className="vsl-outer">
+            <div className="vsl-inner">
+              <div className="vsl-placeholder">
+                <div className="vsl-play-btn">
+                  <svg viewBox="0 0 24 24">
+                    <polygon points="5 3 19 12 5 21 5 3" />
+                  </svg>
+                </div>
+                <div className="vsl-label">2-Minute Walk-and-Talk</div>
+                <div className="vsl-duration">▶ Watch the Sales Engine in Action</div>
+              </div>
+              {/* Insert your actual video tag here once files are ready */}
+              {/* <video src="/your-main-vsl.mp4" poster="/vsl-thumbnail.jpg" controls className="vsl-poster"></video> */}
             </div>
           </div>
         </div>
       </section>
 
-      {/* --- PRICING SECTION --- */}
-      <section id="infrastructure" className="py-24 px-6 relative z-10 border-t border-zinc-900 bg-[#030303] w-full">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-16 text-center">
-            <h2 className="text-4xl font-bold tracking-tight mb-4 text-white">Select Your Infrastructure.</h2>
-            <p className="text-zinc-400 text-lg">Stop playing small. Choose the system that fits your ambition.</p>
+      {/* WALL OF PROOF */}
+      <section className="proof-section" id="proof">
+        <div className="container">
+          <div className="section-label reveal">The Results Speak</div>
+          <h2 className="section-title reveal" style={{ transitionDelay: '0.1s' }}>Undeniable Proof.</h2>
+          <p className="section-sub reveal" style={{ transitionDelay: '0.15s' }}>Real clients. Real results. No fluff, no stock photos — just the work and the outcomes.</p>
+
+          <div className="video-grid reveal" style={{ transitionDelay: '0.2s' }}>
+            <div className="testimonial-card">
+              <div className="testimonial-card-inner">
+                {/* <video src="/testimonial-1.mp4" controls style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}></video> */}
+                <div className="testimonial-play">
+                  <svg viewBox="0 0 24 24">
+                    <polygon points="5 3 19 12 5 21 5 3" />
+                  </svg>
+                </div>
+                <div className="testimonial-name">Creative Hub Founder</div>
+                <div className="testimonial-role">Automated Client Infrastructure</div>
+                <div className="stars">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="testimonial-card">
+              <div className="testimonial-card-inner">
+                {/* <video src="/testimonial-2.mp4" controls style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}></video> */}
+                <div className="testimonial-play">
+                  <svg viewBox="0 0 24 24">
+                    <polygon points="5 3 19 12 5 21 5 3" />
+                  </svg>
+                </div>
+                <div className="testimonial-name">Benedicta</div>
+                <div className="testimonial-role">3x Repeat Client</div>
+                <div className="stars">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            {/* TIER 1: Starter Landing Page */}
-            <div className="bg-zinc-900/30 border border-zinc-800 p-6 rounded-xl flex flex-col hover:border-zinc-700 transition-colors">
-              <div className="mb-6">
-                <h3 className="text-xl font-bold text-zinc-50">The Market Entry</h3>
-                <p className="text-zinc-500 text-xs mt-2">Dominate your niche immediately with a high-speed, ruthless landing page designed to capture leads.</p>
-              </div>
-              <div className="text-3xl font-bold text-zinc-50 mb-6">₦70k</div>
-              <ul className="space-y-3 mb-8 flex-grow text-zinc-300 text-xs">
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Conversion Landing Page Build</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> <span className="font-semibold text-white">Free .com.ng Registration</span></li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Premium NVMe Hosting</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Corporate Business Email</li>
-              </ul>
-              <button onClick={() => openModal('The Market Entry (₦70k)')} className="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 rounded-md transition-all text-sm">
-                Claim Your Market
-              </button>
-            </div>
 
-            {/* TIER 2: Complete Web Build */}
-            <div className="bg-zinc-900/50 border border-zinc-700 p-6 rounded-xl flex flex-col hover:border-zinc-600 transition-colors">
-              <div className="mb-6">
-                <h3 className="text-xl font-bold text-zinc-50">The Authority Platform</h3>
-                <p className="text-zinc-500 text-xs mt-2">A massive upgrade: A complete, multi-page corporate fortress that outranks and outperforms your competitors.</p>
+          <div style={{ marginTop: '64px' }}>
+            <div className="section-label reveal">5-Star Upwork Reviews</div>
+            <div className="upwork-grid reveal" style={{ transitionDelay: '0.1s' }}>
+              <div className="upwork-card">
+                <div className="upwork-placeholder">
+                  {/* <img src="/upwork-1.jpg" alt="Upwork review" style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }} /> */}
+                  <div className="upwork-stars">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="star" viewBox="0 0 24 24" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                    ))}
+                  </div>
+                  <div className="upwork-label">Upwork Review</div>
+                  <div className="upwork-review">"Exceptional quality. Built exactly what I needed."</div>
+                </div>
               </div>
-              <div className="text-3xl font-bold text-zinc-50 mb-6">₦150k</div>
-              <ul className="space-y-3 mb-8 flex-grow text-zinc-300 text-xs">
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Multi-Page Corporate Architecture</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Premium NVMe Hosting Included</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Advanced Lead Capture Workflows</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Google-Ready SEO Foundation</li>
-              </ul>
-              <button onClick={() => openModal('The Authority Platform (₦150k)')} className="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 rounded-md transition-all text-sm">
-                Establish Authority
-              </button>
+              <div className="upwork-card">
+                <div className="upwork-placeholder">
+                  <div className="upwork-stars">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="star" viewBox="0 0 24 24" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                    ))}
+                  </div>
+                  <div className="upwork-label">Upwork Review</div>
+                  <div className="upwork-review">"Fast, professional, and understands the brief."</div>
+                </div>
+              </div>
+              <div className="upwork-card">
+                <div className="upwork-placeholder">
+                  <div className="upwork-stars">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="star" viewBox="0 0 24 24" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                    ))}
+                  </div>
+                  <div className="upwork-label">Upwork Review</div>
+                  <div className="upwork-review">"Will hire again. Best dev on the platform."</div>
+                </div>
+              </div>
             </div>
-
-            {/* TIER 3: The AI Engine (Highlight) */}
-            <div className="bg-zinc-900 border border-emerald-500/60 p-6 rounded-xl flex flex-col relative shadow-[0_0_30px_rgba(16,185,129,0.1)] lg:-translate-y-4">
-              <div className="absolute top-0 right-4 bg-emerald-500 text-zinc-950 text-[10px] font-black px-2 py-1 rounded-b-md uppercase tracking-widest">
-                The Ultimate Edge
-              </div>
-              <div className="mb-6 mt-2">
-                <h3 className="text-xl font-bold text-zinc-50">The AI Revenue Engine</h3>
-                <p className="text-zinc-400 text-xs mt-2">The complete business upgrade. We build the site, host it securely, and deploy the AI to aggressively close your leads 24/7.</p>
-              </div>
-              <div className="text-3xl font-bold text-emerald-400 mb-6">₦250k</div>
-              <ul className="space-y-3 mb-8 flex-grow text-zinc-200 text-xs">
-                <li className="flex items-start gap-2 font-semibold text-white"><Check size={16} className="text-emerald-400 shrink-0"/> Everything in The Authority Platform</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-400 shrink-0"/> Custom AI WhatsApp Negotiator</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-400 shrink-0"/> Hands-Free Automated Booking System</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-400 shrink-0"/> Priority Engineering Support</li>
-              </ul>
-              <button onClick={() => openModal('The AI Revenue Engine (₦250k)')} className="w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold py-3 rounded-md shadow-lg transition-all text-sm">
-                Automate Your Revenue
-              </button>
-            </div>
-
-            {/* TIER 4: SaaS & MVP Dev */}
-            <div className="bg-zinc-900/30 border border-zinc-800 p-6 rounded-xl flex flex-col hover:border-zinc-700 transition-colors">
-              <div className="mb-6">
-                <h3 className="text-xl font-bold text-zinc-50">Custom SaaS / MVP</h3>
-                <p className="text-zinc-500 text-xs mt-2">You have the vision. We have the code. Complex software built for absolute market takeover.</p>
-              </div>
-              <div className="text-3xl font-bold text-zinc-50 mb-6">Custom</div>
-              <ul className="space-y-3 mb-8 flex-grow text-zinc-300 text-xs">
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Heavy-Duty Next.js / React Web Apps</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Sharetribe Marketplaces & Portals</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Proprietary AI Model Integrations</li>
-                <li className="flex items-start gap-2"><Check size={16} className="text-emerald-500 shrink-0"/> Dedicated Cloud Infrastructure</li>
-              </ul>
-              <button onClick={() => openModal('SaaS & MVP Custom Quote')} className="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 rounded-md transition-all text-sm">
-                Request Engineering Audit
-              </button>
-            </div>
-
+            <p className="proof-sub-label reveal">Drop your actual upwork-1.jpg, upwork-2.jpg, upwork-3.jpg into /public to replace placeholders</p>
           </div>
         </div>
       </section>
 
-      {/* --- BOTTOM CTA --- */}
-      <section className="py-20 px-6 bg-[#020202] border-t border-emerald-900/20 text-center w-full">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white tracking-tight">Your Competitors Are Automating.</h2>
-          <p className="text-zinc-400 mb-10">Every day you wait is another customer lost. Stop bleeding revenue and let us build your engine today.</p>
-          <button onClick={() => openModal('Footer CTA - Final Push')} className="bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold py-4 px-10 rounded-md transition-all">
-            Secure Your Build Slot Now
-          </button>
+      {/* PACKAGES */}
+      <section id="packages">
+        <div className="container">
+          <div className="section-label reveal">Three-Tier Architecture</div>
+          <h2 className="section-title reveal" style={{ transitionDelay: '0.1s' }}>Choose Your Engine.</h2>
+          <p className="section-sub reveal" style={{ transitionDelay: '0.15s' }}>We build systems, not brochures. Select the infrastructure that fits your current volume.</p>
+
+          <div className="pricing-grid">
+            {/* TIER 1 */}
+            <div className="pkg-card reveal" style={{ transitionDelay: '0.15s' }}>
+              <div className="pkg-icon">
+                <svg viewBox="0 0 24 24" style={{ color: '#f8fafc' }}>
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                  <line x1="8" y1="21" x2="16" y2="21" />
+                  <line x1="12" y1="17" x2="12" y2="21" />
+                </svg>
+              </div>
+              <div className="pkg-tier">Tier 01</div>
+              <div className="pkg-name">The Corporate Foundation</div>
+              <div className="price-hidden">Pricing on consultation</div>
+              <div className="pkg-divider"></div>
+              <ul className="pkg-features">
+                <li><svg className="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>High-Speed Custom Platform</li>
+                <li><svg className="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>Corporate Email Suite</li>
+                <li><svg className="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>Direct WhatsApp Routing</li>
+                <li><svg className="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>Backend SEO Structuring</li>
+              </ul>
+              <a href="https://wa.me/2349000000000?text=Hi%20Precious%2C%20I%20want%20to%20discuss%20the%20Corporate%20Foundation%20setup." target="_blank" rel="noopener noreferrer" className="btn-pkg">
+                <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
+                Discuss This Setup
+              </a>
+            </div>
+
+            {/* TIER 2 FEATURED */}
+            <div className="pkg-card featured reveal" style={{ transitionDelay: '0.25s' }}>
+              <div className="popular-badge">
+                <svg viewBox="0 0 24 24" width="12" height="12" stroke="#fff" fill="#fff" strokeWidth="0"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                Most Popular
+              </div>
+              <div className="pkg-icon em">
+                <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
+              </div>
+              <div className="pkg-tier" style={{ color: 'var(--em)' }}>Tier 02</div>
+              <div className="pkg-name">The AI Revenue Engine</div>
+              <div className="price-hidden">Pricing on consultation</div>
+              <div className="pkg-divider"></div>
+              <ul className="pkg-features">
+                <li><svg className="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>Everything in Tier 1, plus:</li>
+                <li className="plus-item"><svg className="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>Custom AI WhatsApp Negotiator</li>
+                <li className="plus-item"><svg className="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>Automated Lead Vault</li>
+                <li className="plus-item"><svg className="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>Smart Human Handoff</li>
+              </ul>
+              <a href="https://wa.me/2349000000000?text=Hi%20Precious%2C%20I%20want%20to%20build%20the%20AI%20Revenue%20Engine." target="_blank" rel="noopener noreferrer" className="btn-pkg btn-featured">
+                <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
+                Build My AI Engine
+              </a>
+            </div>
+
+            {/* TIER 3 */}
+            <div className="pkg-card reveal" style={{ transitionDelay: '0.35s' }}>
+              <div className="pkg-icon">
+                <svg viewBox="0 0 24 24" style={{ color: '#06b6d4' }}>
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+              </div>
+              <div className="pkg-tier">Tier 03</div>
+              <div className="pkg-name">The Market Dominator</div>
+              <div className="price-hidden">Pricing on consultation</div>
+              <div className="pkg-divider"></div>
+              <ul className="pkg-features">
+                <li><svg className="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>Everything in Tier 2, plus:</li>
+                <li className="plus-item"><svg className="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>Multi-Agent CRM Dispatch</li>
+                <li className="plus-item"><svg className="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>Day-One Traffic Injection</li>
+                <li className="plus-item"><svg className="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>Priority Architecture Support</li>
+              </ul>
+              <a href="https://wa.me/2349000000000?text=Hi%20Precious%2C%20I%20want%20to%20apply%20for%20the%20Market%20Dominator%20Enterprise%20package." target="_blank" rel="noopener noreferrer" className="btn-pkg">
+                <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
+                Apply For Enterprise
+              </a>
+            </div>
+          </div>
+
+          {/* Final CTA */}
+          <div style={{ textAlign: 'center', marginTop: '72px' }} className="reveal">
+            <p style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '24px' }}>Not sure which tier is right for you? Let's figure it out together.</p>
+            <a href="https://wa.me/2349000000000?text=Hi%20Precious%2C%20I%27m%20not%20sure%20which%20package%20is%20right%20for%20me.%20Can%20we%20talk%3F" target="_blank" rel="noopener noreferrer" className="btn-wa">
+              <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
+              Talk to Precious Directly
+            </a>
+          </div>
         </div>
       </section>
 
-      {/* --- FOOTER --- */}
-      <footer className="w-full bg-[#000000] border-t border-zinc-900 py-8 px-6 text-center text-sm text-zinc-600 mt-auto">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-2">
-                <Key size={16} className="text-zinc-500" />
-                <span className="font-semibold text-zinc-400">Signet Systems.</span>
-            </div>
-            <span>&copy; {new Date().getFullYear()} All rights reserved. Code that dominates.</span>
+      {/* FOOTER */}
+      <footer>
+        <div className="footer-logo">
+          <div className="logo-icon">
+            <svg viewBox="0 0 24 24" style={{ width: '18px', height: '18px', stroke: '#fff', fill: 'none', strokeWidth: 2.5, strokeLinecap: 'round', strokeLinejoin: 'round' }}>
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            </svg>
+          </div>
+          <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: '16px' }}>OP5 Technologies</span>
         </div>
+        <p className="footer-tagline">We don't build websites. We build Sales Engines.</p>
+        <a href="https://wa.me/2349000000000?text=Hi%20Precious%2C%20I%27d%20like%20to%20learn%20more%20about%20OP5%20Technologies." target="_blank" rel="noopener noreferrer" className="footer-cta">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="#fff" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          Get Started on WhatsApp
+        </a>
+        <p className="footer-copy">© 2026 OP5 Technologies. All rights reserved.</p>
       </footer>
-
-      {/* --- LEAD CAPTURE MODAL --- */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 bg-zinc-950/80 backdrop-blur-md">
-            <motion.div 
-              initial={{ scale: 0.95, opacity: 0, y: 15 }} 
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 15 }}
-              transition={{ duration: 0.2 }}
-              className="bg-zinc-900 border border-zinc-700/50 p-8 rounded-xl w-full max-w-md shadow-2xl relative overflow-hidden"
-            >
-              <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-emerald-600 via-emerald-400 to-emerald-600"></div>
-              
-              <button onClick={() => setIsModalOpen(false)} className="absolute top-5 right-5 text-zinc-500 hover:text-white transition-colors">
-                <X size={24}/>
-              </button>
-              
-              <h3 className="text-2xl font-bold mb-2 text-white tracking-tight">Let's Build Your Empire.</h3>
-              <p className="text-zinc-400 text-sm mb-8">You selected <span className="text-emerald-400 font-semibold">{selectedPlan}</span>. Drop your details below and our engineers will connect with you on WhatsApp immediately.</p>
-              
-              <form onSubmit={handleConnect} className="space-y-4">
-                <div>
-                  <label className="block text-[11px] font-bold tracking-widest text-zinc-400 uppercase mb-1.5">Full Name</label>
-                  <input type="text" required value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="w-full bg-zinc-950/50 border border-zinc-800 rounded-md px-4 py-3.5 text-white focus:outline-none focus:border-emerald-500 transition-all placeholder:text-zinc-700" placeholder="e.g. John Doe" />
-                </div>
-                <div>
-                  <label className="block text-[11px] font-bold tracking-widest text-zinc-400 uppercase mb-1.5">Business Email</label>
-                  <input type="email" required value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className="w-full bg-zinc-950/50 border border-zinc-800 rounded-md px-4 py-3.5 text-white focus:outline-none focus:border-emerald-500 transition-all placeholder:text-zinc-700" placeholder="john@company.com" />
-                </div>
-                <div>
-                  <label className="block text-[11px] font-bold tracking-widest text-zinc-400 uppercase mb-1.5">Business / Project Name</label>
-                  <input type="text" required value={formData.business} onChange={(e) => setFormData({...formData, business: e.target.value})} className="w-full bg-zinc-950/50 border border-zinc-800 rounded-md px-4 py-3.5 text-white focus:outline-none focus:border-emerald-500 transition-all placeholder:text-zinc-700" placeholder="e.g. Apex Logistics" />
-                </div>
-                
-                <button type="submit" disabled={isConnecting} className="w-full bg-emerald-500 hover:bg-emerald-400 disabled:bg-emerald-800 disabled:text-emerald-300 text-zinc-950 font-bold py-4 rounded-md transition-all mt-6 flex justify-center items-center gap-2 text-lg">
-                  {isConnecting ? (
-                    <span className="animate-pulse">Establishing Secure Connection...</span>
-                  ) : (
-                    <>Chat with Lead Engineer <MessageSquare size={18} /></>
-                  )}
-                </button>
-              </form>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-    </div>
+    </>
   );
 }
