@@ -3,7 +3,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Check, Star, MessageCircle, ChevronDown } from 'lucide-react';
 
-const WA_LINK = "https://wa.me/234XXXXXXXXXX"; // ← Replace with your real number
+const WA_LINK = "https://wa.me/2348112476891"; // ← Replace with your real number
 
 /* ── Clickable video card with thumbnail from first frame ── */
 function TestimonialVideo({ src, title, subtitle }) {
