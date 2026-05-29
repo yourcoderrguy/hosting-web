@@ -4,7 +4,7 @@ import React, { useRef, useState, useEffect, useCallback, createContext, useCont
 import { Check, Star, MessageCircle, ChevronDown, Zap, Bot, TrendingUp, Phone, Clock, DollarSign, X } from 'lucide-react';
 
 /* ────────────────────────────────────────────────
-   WHATSAPP LINKS — unique pre-filled message per button
+   WHATSAPP LINKS  unique pre-filled message per button
 ──────────────────────────────────────────────── */
 const PHONE = "2348112476891";
 function wa(msg: string) {
@@ -13,9 +13,9 @@ function wa(msg: string) {
 const WA = {
   engineer:      wa("Hi Precious 👋 I just visited the OP5 Technologies website and I'd like to chat with an engineer about what you can build for my business."),
   strategyCall:  wa("Hi Precious 👋 I saw the OP5 Technologies landing page and I'm interested in booking a free strategy call. I want to understand how the AI Sales Engine can work for my business."),
-  tier1:         wa("Hi Precious 👋 I'm interested in Tier 1 — The Corporate Foundation. I visited your website and I'd like to discuss this setup and get pricing details."),
+  tier1:         wa("Hi Precious 👋 I'm interested in Tier 1  The Corporate Foundation. I visited your website and I'd like to discuss this setup and get pricing details."),
   tier2:         wa("Hi Precious 👋 I want to build the AI Revenue Engine (Tier 2). I visited your website and I'm ready to discuss how this works and what it costs for my business."),
-  tier3:         wa("Hi Precious 👋 I'm interested in Tier 3 — The Market Dominator. I visited your website and I'd like to apply for the enterprise setup and get pricing."),
+  tier3:         wa("Hi Precious 👋 I'm interested in Tier 3  The Market Dominator. I visited your website and I'd like to apply for the enterprise setup and get pricing."),
   talkDirectly:  wa("Hi Precious 👋 I went through the OP5 Technologies website and I still have some questions. Can we talk directly so you can help me figure out the right setup for my business?"),
   stickyBar:     wa("Hi Precious 👋 I was on the OP5 Technologies website and had a question. Can I ask you something quickly?"),
 };
@@ -230,7 +230,7 @@ function StickyBar() {
             Have a question? Just ask.
           </p>
           <p style={{ margin: 0, fontSize: 11, color: '#64748b', lineHeight: 1.3 }}>
-            Precious replies personally — usually within minutes.
+            Precious replies personally  usually within minutes.
           </p>
         </div>
 
@@ -314,7 +314,7 @@ export default function LandingPage() {
             </span>
           </h1>
           <p style={{ fontSize:16, color:'#94a3b8', maxWidth:480, lineHeight:1.7, marginBottom:32, fontWeight:300 }}>
-            Your business leaks money every time you step away from your phone. We connect lightning-fast web architecture directly to a custom AI WhatsApp agent that haggles and closes deals 24/7.
+            Your business leaks money every time you step away from your phone. We connect lightning-fast web architecture directly to a custom AI agent that haggles and closes deals 24/7.
           </p>
           <a href="#packages" style={{ display:'inline-flex', alignItems:'center', gap:8, padding:'14px 32px', background:'#f8fafc', color:'#000', borderRadius:99, fontWeight:700, fontSize:15, textDecoration:'none', marginBottom:40 }}>
             <MessageCircle style={{ width:18, height:18 }} />
@@ -336,7 +336,7 @@ export default function LandingPage() {
             <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
               {[
                 { icon:<Phone style={{ width:18, height:18 }} />, text:"A potential customer DMs you on WhatsApp. You're busy. They wait 2 hours. They've already bought from your competitor." },
-                { icon:<DollarSign style={{ width:18, height:18 }} />, text:"Your website looks decent — but it doesn't explain your offer clearly, doesn't handle objections, and doesn't close deals." },
+                { icon:<DollarSign style={{ width:18, height:18 }} />, text:"Your website looks decent  but it doesn't explain your offer clearly, doesn't handle objections, and doesn't close deals." },
                 { icon:<Clock style={{ width:18, height:18 }} />, text:"You're spending money on ads sending people to a page that can't convert. Every naira on ads is wasted if the landing page can't sell." },
               ].map((item, i) => (
                 <div key={i} style={{ display:'flex', alignItems:'flex-start', gap:14 }}>
@@ -349,7 +349,7 @@ export default function LandingPage() {
             </div>
             <div style={{ marginTop:24, padding:'16px 20px', borderRadius:16, background:'rgba(16,185,129,0.08)', border:'1px solid rgba(16,185,129,0.2)' }}>
               <p style={{ fontSize:14, color:'#34d399', fontWeight:600, margin:0, lineHeight:1.5 }}>
-                ✦ That&apos;s exactly what we fix. A blazing-fast website that explains your offer — connected to an AI agent that handles your WhatsApp, negotiates, and closes — around the clock, without you lifting a finger.
+                ✦ That&apos;s exactly what we fix. A blazing-fast website that explains your offer  connected to an AI agent that negotiates, and closes deals  around the clock, without you lifting a finger.
               </p>
             </div>
           </div>
@@ -364,9 +364,9 @@ export default function LandingPage() {
           </div>
           <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
             {[
-              { icon:<Zap style={{ width:20, height:20 }} />,        title:'A Website That Actually Sells',    desc:"We build your site with one goal: turn visitors into leads. Fast loading, clear messaging, mobile-first. No fluff — every word on the page is designed to make someone take action.",                                                                                   tag:'The Foundation' },
-              { icon:<Bot style={{ width:20, height:20 }} />,        title:'An AI Agent on Your WhatsApp',    desc:"We train a custom AI on your business — your prices, your services, your tone. It responds to every WhatsApp enquiry instantly, answers questions, handles objections, and quotes prices. It works while you sleep.", tag:'The Engine' },
-              { icon:<TrendingUp style={{ width:20, height:20 }} />, title:'Leads Stored. Nothing Lost.',      desc:"Every person who reaches out gets captured in a lead vault. You see who enquired, what they asked, and what stage they're at. Zero leads fall through the cracks — even at 2am.",                                       tag:'The Safety Net' },
+              { icon:<Zap style={{ width:20, height:20 }} />,        title:'A Website That Actually Sells',    desc:"We build your site with one goal: turn visitors into leads. Fast loading, clear messaging, mobile-first. No fluff  every word on the page is designed to make someone take action.",                                                                                   tag:'The Foundation' },
+              { icon:<Bot style={{ width:20, height:20 }} />,        title:'An AI Agent on Your Website / WhatsApp',    desc:"We train a custom AI on your business  your prices, your services, your tone. It responds to every WhatsApp enquiry instantly, answers questions, handles objections, and quotes prices. It works while you sleep.", tag:'The Engine' },
+              { icon:<TrendingUp style={{ width:20, height:20 }} />, title:'Leads Stored. Nothing Lost.',      desc:"Every person who reaches out gets captured in a lead vault. You see who enquired, what they asked, and what stage they're at. Zero leads fall through the cracks  even at 2am.",                                       tag:'The Safety Net' },
             ].map((item, i) => (
               <div key={i} style={{ padding:24, borderRadius:20, background:'rgba(255,255,255,0.03)', border:'1px solid rgba(255,255,255,0.08)', display:'flex', gap:18, alignItems:'flex-start' }}>
                 <div style={{ width:44, height:44, borderRadius:12, background:'linear-gradient(135deg,rgba(16,185,129,0.15),rgba(6,182,212,0.1))', border:'1px solid rgba(16,185,129,0.25)', display:'flex', alignItems:'center', justifyContent:'center', color:'#34d399', flexShrink:0 }}>
@@ -394,7 +394,7 @@ export default function LandingPage() {
             <div style={{ display:'flex', flexDirection:'column', gap:0 }}>
               {[
                 { step:'01', title:'We Have a Strategy Call',        desc:"You tell us your business, your customers, your prices, and your goals. We map out exactly what your AI agent will say and how your site will be structured. No guesswork.", time:'Day 1' },
-                { step:'02', title:'We Build & Train Everything',    desc:"We build your website and train your custom WhatsApp AI agent on your business. You review, we refine. The AI is tested until it sounds exactly like a great salesperson — not a robot.", time:'Days 2–7' },
+                { step:'02', title:'We Build & Train Everything',    desc:"We build your website and train your custom WhatsApp AI agent on your business. You review, we refine. The AI is tested until it sounds exactly like a great salesperson  not a robot.", time:'Days 2–7' },
                 { step:'03', title:'You Go Live & Start Converting', desc:"We launch. From this point, every WhatsApp enquiry is handled automatically. You get notified when a deal is ready for your personal touch. Everything else runs itself.", time:'Day 7+' },
               ].map((item, i) => (
                 <div key={i} style={{ display:'flex', gap:20, alignItems:'flex-start', paddingBottom: i < 2 ? 32 : 0 }}>
@@ -425,7 +425,7 @@ export default function LandingPage() {
             <div style={{ textAlign:'center', marginBottom:48 }}>
               <div style={{ fontSize:11, fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', color:'#34d399', marginBottom:12 }}>The Results Speak</div>
               <h2 style={{ fontSize:'clamp(1.8rem,6vw,2.8rem)', fontWeight:900, marginBottom:12 }}>Undeniable Proof.</h2>
-              <p style={{ color:'#94a3b8', fontSize:15, maxWidth:400, margin:'0 auto' }}>Real clients. Real results. No fluff, no stock photos — just the work and the outcomes.</p>
+              <p style={{ color:'#94a3b8', fontSize:15, maxWidth:400, margin:'0 auto' }}>Real clients. Real results. No fluff, no stock photos  just the work and the outcomes.</p>
             </div>
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, maxWidth:600, margin:'0 auto 60px' }}>
               <TestimonialVideo src="/cre8ifhub.mp4" title="Creative Hub Founder" subtitle="Automated Client Infrastructure" />
@@ -472,7 +472,7 @@ export default function LandingPage() {
               </a>
             </div>
 
-            {/* TIER 2 — FEATURED */}
+            {/* TIER 2  FEATURED */}
             <div style={{ padding:28, borderRadius:24, background:'linear-gradient(135deg,rgba(16,185,129,0.1),rgba(6,182,212,0.05))', border:'1px solid #10b981', boxShadow:'0 0 50px rgba(16,185,129,0.12)', position:'relative' }}>
               <div style={{ position:'absolute', top:-14, left:'50%', transform:'translateX(-50%)', padding:'4px 16px', background:'linear-gradient(90deg,#10b981,#06b6d4)', borderRadius:99, fontSize:10, fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', color:'white', display:'flex', alignItems:'center', gap:4, whiteSpace:'nowrap' }}>
                 <Star style={{ width:10, height:10, fill:'white', stroke:'none' }} />Most Popular
