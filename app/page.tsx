@@ -307,7 +307,7 @@ export default function LandingPage() {
         <section style={{ paddingTop: 100, paddingBottom: 60, paddingLeft: 20, paddingRight: 20, maxWidth: 600, margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 16px', borderRadius: 99, border: '1px solid rgba(16,185,129,0.3)', background: 'rgba(16,185,129,0.1)', color: '#34d399', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 28 }}>
             <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981', animation: 'pulse 2s infinite', display: 'inline-block' }} />
-            Helping Nigerian Businesses Sell More
+            Helping Businesses Sell More 24/7
           </div>
           <h1 style={{ fontSize: 'clamp(2rem,8vw,3.5rem)', fontWeight: 900, lineHeight: 1.1, letterSpacing: '-0.02em', margin: '0 0 20px 0' }}>
             Your Business Should Be Making Sales{' '}
