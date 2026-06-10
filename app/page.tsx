@@ -310,17 +310,17 @@ export default function LandingPage() {
             Helping Businesses Sell More 24/7
           </div>
           <h1 style={{ fontSize: 'clamp(2rem,8vw,3.5rem)', fontWeight: 900, lineHeight: 1.1, letterSpacing: '-0.02em', margin: '0 0 20px 0' }}>
-            Your Business Should Be Making Sales{' '}
+            Your Website Can Automatically Answer Your Customers{' '}
             <span style={{ background: 'linear-gradient(90deg,#34d399,#22d3ee)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-              Even When You&apos;re Asleep.
+              Even When You&apos;re Away.
             </span>
           </h1>
           <p style={{ fontSize: 16, color: '#94a3b8', maxWidth: 480, lineHeight: 1.7, marginBottom: 32, fontWeight: 300 }}>
-            We build you a website with a live AI chat that talks to your visitors   and connect it to your WhatsApp so no customer ever gets ignored, day or night. You focus on running your business. The AI handles the conversations.
+            Stop staying glued to your phone because of customers... Go do other things and your Whatsapp responds to your customers seamlessly
           </p>
           <a href="#packages" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 32px', background: '#f8fafc', color: '#000', borderRadius: 99, fontWeight: 700, fontSize: 15, textDecoration: 'none', marginBottom: 40 }}>
             <MessageCircle style={{ width: 18, height: 18 }} />
-            Show Me How It Works
+            This is How
           </a>
           <HeroVideo />
           <div style={{ marginTop: 28, color: '#475569' }}>
