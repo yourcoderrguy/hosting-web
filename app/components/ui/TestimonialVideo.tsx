@@ -8,18 +8,19 @@ import type { TestimonialVideoProps } from "../../types/video";
 let _vidCounter = 0;
 
 /*
-  Fix 1: thumbReady falls back to true after 800 ms so the play button
-         always becomes visible, even if the browser never fires
-         'seeked'/'canplay' (iOS Safari).
-  Fix 2: card background is solid — no gradient — to eliminate the
-         WebKit compositing scan-line glitch.
-  Fix 3: the `controls` attribute is NEVER toggled on the <video>.
-         Android Chrome renders video through a hardware overlay layer;
-         flipping between "no controls" and "native controls" forces a
-         surface rebuild mid-scroll and is what produced the corrupted/
-         "broken TV" rendering. Play/pause/mute are handled with a small
-         custom control set instead, so the video element's attributes
-         never change after mount.
+  Root cause of the Android Chrome "broken TV" glitch: a permanently
+  mounted <video> element (even paused, even hidden behind a poster
+  overlay) keeps a hardware decode/compositing surface allocated. On
+  some Android GPU drivers that surface's memory doesn't get cleared
+  when the page scrolls, so stale frame data bleeds into whatever
+  scrolls into that screen region next — the doubled "ghost text" and
+  static/scan-line artifacts you're seeing.
+
+  Fix: the <video> element only exists in the DOM while a clip is
+  actually playing. Everything else (thumbnail state) is a plain
+  <img> built from a canvas-captured frame. Playing, pausing, ending,
+  or scrolling out of view all fully UNMOUNT the <video>, so its
+  surface is torn down completely instead of being reused.
 */
 export default function TestimonialVideo({ src, title, subtitle }: TestimonialVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -27,79 +28,93 @@ export default function TestimonialVideo({ src, title, subtitle }: TestimonialVi
   const idRef = useRef<string>(`vid-${++_vidCounter}`);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
+  const [posterUrl, setPosterUrl] = useState<string | null>(null);
   const [thumbReady, setThumbReady] = useState(false);
   const ctx = useVideoContext();
 
+  /* Capture one poster frame off-DOM, then discard the loader video
+     entirely. This is the only time a decoder touches this clip
+     before the person actually taps play. */
   useEffect(() => {
-    const v = videoRef.current;
-    if (!v || !ctx) return;
-    ctx.register(idRef.current, v);
-    return () => ctx.unregister(idRef.current);
-  }, [ctx]);
+    let cancelled = false;
+    const loader = document.createElement("video");
+    loader.src = src;
+    loader.preload = "metadata";
+    loader.muted = true;
+    loader.playsInline = true;
 
-  /* Thumbnail: seek to 0.5 s on metadata load.
-     If seeked/canplay never fires (iOS Safari), fall back after 800 ms. */
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-
-    const reveal = () => setThumbReady(true);
-    const onMeta = () => {
+    const capture = () => {
+      if (cancelled) return;
       try {
-        v.currentTime = 0.5;
+        const canvas = document.createElement("canvas");
+        canvas.width = loader.videoWidth || 360;
+        canvas.height = loader.videoHeight || 640;
+        const c2d = canvas.getContext("2d");
+        c2d?.drawImage(loader, 0, 0, canvas.width, canvas.height);
+        setPosterUrl(canvas.toDataURL("image/jpeg", 0.72));
       } catch (_) {
-        reveal();
+        // Ignore — falls back to a plain dark card with the play button.
+      }
+      setThumbReady(true);
+      loader.src = "";
+      loader.load();
+    };
+
+    const onLoaded = () => {
+      try {
+        loader.currentTime = 0.5;
+      } catch (_) {
+        capture();
       }
     };
-    const timer = setTimeout(reveal, 800);
 
-    v.addEventListener("loadedmetadata", onMeta);
-    v.addEventListener("seeked", reveal);
-    v.addEventListener("canplay", reveal);
+    const fallback = setTimeout(() => !cancelled && setThumbReady(true), 1200);
 
-    if (v.readyState >= 1) onMeta();
+    loader.addEventListener("loadeddata", onLoaded);
+    loader.addEventListener("seeked", capture);
+    loader.load();
 
     return () => {
-      clearTimeout(timer);
-      v.removeEventListener("loadedmetadata", onMeta);
-      v.removeEventListener("seeked", reveal);
-      v.removeEventListener("canplay", reveal);
+      cancelled = true;
+      clearTimeout(fallback);
+      loader.removeEventListener("loadeddata", onLoaded);
+      loader.removeEventListener("seeked", capture);
+      loader.src = "";
     };
-  }, []);
+  }, [src]);
 
-  /* Pause (not unmount, not attribute change) when scrolled out of view */
+  /* Register with the shared "only one video plays at a time" context
+     only while this card's <video> actually exists in the DOM. */
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v || !ctx || !playing) return;
+    ctx.register(idRef.current, v);
+    return () => ctx.unregister(idRef.current);
+  }, [ctx, playing]);
+
+  /* Fully unmount (not just pause) once scrolled out of view. */
   useEffect(() => {
     const el = containerRef.current;
-    const v = videoRef.current;
-    if (!el || !v) return;
+    if (!el || !playing) return;
     const obs = new IntersectionObserver(
       ([e]) => {
-        if (!e.isIntersecting && !v.paused) v.pause();
+        if (!e.isIntersecting) setPlaying(false);
       },
       { threshold: 0.2 }
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, []);
+  }, [playing]);
 
-  const handleToggle = () => {
-    const v = videoRef.current;
-    if (!v || !thumbReady) return;
-    if (v.paused) {
-      ctx?.notifyPlay(idRef.current);
-      if (!playing) v.currentTime = 0;
-      v.play();
-    } else {
-      v.pause();
-    }
+  const handlePlay = () => {
+    if (!thumbReady) return;
+    ctx?.notifyPlay(idRef.current);
+    setPlaying(true);
   };
 
   const handleMuteToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const v = videoRef.current;
-    if (!v) return;
-    v.muted = !v.muted;
-    setMuted(v.muted);
+    setMuted((m) => !m);
   };
 
   return (
@@ -115,7 +130,7 @@ export default function TestimonialVideo({ src, title, subtitle }: TestimonialVi
       }}
     >
       <div
-        onClick={handleToggle}
+        onClick={playing ? undefined : handlePlay}
         style={{
           width: "100%",
           borderRadius: 12,
@@ -123,25 +138,39 @@ export default function TestimonialVideo({ src, title, subtitle }: TestimonialVi
           position: "relative",
           background: "#000",
           aspectRatio: "9/16",
-          cursor: thumbReady ? "pointer" : "default",
+          cursor: !playing && thumbReady ? "pointer" : "default",
         }}
       >
-        <video
-          ref={videoRef}
-          src={src}
-          preload="metadata"
-          playsInline
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
-          onPlay={() => setPlaying(true)}
-          onPause={() => setPlaying(false)}
-          onEnded={() => setPlaying(false)}
-        />
+        {playing ? (
+          <video
+            ref={videoRef}
+            src={src}
+            autoPlay
+            muted={muted}
+            playsInline
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+            onPause={() => setPlaying(false)}
+            onEnded={() => setPlaying(false)}
+          />
+        ) : posterUrl ? (
+          <img
+            src={posterUrl}
+            alt={title}
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
+        ) : null}
 
         {!thumbReady && !playing && (
           <div
@@ -167,7 +196,6 @@ export default function TestimonialVideo({ src, title, subtitle }: TestimonialVi
           </div>
         )}
 
-        {/* Big center play button — shown only before playback starts */}
         {!playing && thumbReady && (
           <div
             style={{
@@ -202,13 +230,12 @@ export default function TestimonialVideo({ src, title, subtitle }: TestimonialVi
           </div>
         )}
 
-        {/* Minimal custom controls — visible only while playing */}
         {playing && (
           <>
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                handleToggle();
+                setPlaying(false);
               }}
               aria-label="Pause"
               style={{
