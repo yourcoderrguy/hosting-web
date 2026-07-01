@@ -29,8 +29,7 @@ export default function StickyBar() {
         transition: "transform 0.35s cubic-bezier(0.34,1.56,0.64,1)",
         padding: "12px 16px",
         paddingBottom: "calc(12px + env(safe-area-inset-bottom))",
-        background: "rgba(8,8,8,0.97)",
-        backdropFilter: "blur(20px)",
+        background: "rgba(8,8,8,0.99)",
         borderTop: "1px solid rgba(16,185,129,0.2)",
         boxShadow: "0 -8px 40px rgba(0,0,0,0.6)",
       }}

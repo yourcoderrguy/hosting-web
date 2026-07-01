@@ -18,8 +18,7 @@ export default function Header() {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        background: "rgba(5,5,5,0.85)",
-        backdropFilter: "blur(16px)",
+        background: "rgba(5,5,5,0.96)",
         borderBottom: "1px solid rgba(255,255,255,0.07)",
       }}
     >
