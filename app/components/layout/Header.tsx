@@ -50,6 +50,7 @@ export default function Header() {
         href={WA.engineer}
         variant="outline"
         size="sm"
+        nowrap
         icon={<MessageCircle style={{ width: 15, height: 15 }} />}
       >
         Let&apos;s Talk

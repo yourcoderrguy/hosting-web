@@ -29,17 +29,23 @@ export default function LandingPage() {
           color: "#f8fafc",
         }}
       >
-        {/* Background Glow Orbs */}
+        {/* Background Glow Orbs — radial-gradient, not filter:blur().
+            A blur() filter on a large position:fixed element has to be
+            recomputed by the GPU on every scroll frame, right next to
+            the video elements' own hardware decode layer. That fight
+            over the compositor is what was producing the static/ghost
+            glitch, not the videos themselves. A radial-gradient gives
+            the same soft glow as plain paint, with no filter pass. */}
         <div
           style={{
-            position: "fixed",
+            position: "absolute",
             top: "-100px",
             left: "50%",
             transform: "translateX(-50%)",
-            width: "600px",
-            height: "600px",
-            background: "rgba(16,185,129,0.07)",
-            filter: "blur(120px)",
+            width: "900px",
+            height: "900px",
+            background:
+              "radial-gradient(circle, rgba(16,185,129,0.10) 0%, rgba(16,185,129,0.04) 35%, rgba(16,185,129,0) 70%)",
             borderRadius: "50%",
             pointerEvents: "none",
             zIndex: 0,
@@ -47,13 +53,13 @@ export default function LandingPage() {
         />
         <div
           style={{
-            position: "fixed",
+            position: "absolute",
             bottom: "-200px",
-            right: "-100px",
-            width: "500px",
-            height: "500px",
-            background: "rgba(6,182,212,0.07)",
-            filter: "blur(120px)",
+            right: "-150px",
+            width: "800px",
+            height: "800px",
+            background:
+              "radial-gradient(circle, rgba(6,182,212,0.10) 0%, rgba(6,182,212,0.04) 35%, rgba(6,182,212,0) 70%)",
             borderRadius: "50%",
             pointerEvents: "none",
             zIndex: 0,

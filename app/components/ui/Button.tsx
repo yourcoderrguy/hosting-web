@@ -13,6 +13,10 @@ interface ButtonProps {
   size?: Size;
   fullWidth?: boolean;
   external?: boolean;
+  /** Set true only for short, single-line labels (e.g. header "Let's Talk").
+   *  Long CTA copy should stay false (default) so it wraps instead of
+   *  overflowing the screen on mobile. */
+  nowrap?: boolean;
   style?: React.CSSProperties;
 }
 
@@ -50,6 +54,7 @@ export default function Button({
   size = "lg",
   fullWidth = false,
   external = true,
+  nowrap = false,
   style,
 }: ButtonProps) {
   return (
@@ -63,9 +68,13 @@ export default function Button({
         justifyContent: "center",
         gap: 8,
         width: fullWidth ? "100%" : undefined,
+        maxWidth: "100%",
+        boxSizing: "border-box",
         borderRadius: 99,
         textDecoration: "none",
-        whiteSpace: "nowrap",
+        whiteSpace: nowrap ? "nowrap" : "normal",
+        textAlign: "center",
+        lineHeight: 1.35,
         ...SIZE_STYLES[size],
         ...VARIANT_STYLES[variant],
         ...style,
