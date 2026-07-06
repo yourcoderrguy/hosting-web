@@ -6,6 +6,11 @@ export const metadata: Metadata = {
   title: "OP5 Technologies — AI Sales Engine",
   description:
     "Your website can automatically answer your customers, qualify leads, and continue the conversation on WhatsApp — even while you're asleep.",
+  icons: {
+    icon: "/app-icon.svg",
+    shortcut: "/app-icon.svg",
+    apple: "/app-icon.svg",
+  },
 };
 
 const META_PIXEL_ID = "895037256987862";
