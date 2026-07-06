@@ -35,9 +35,8 @@ export default function StickyBar() {
       }}
     >
       <div
+        className="section-wrap"
         style={{
-          maxWidth: 600,
-          margin: "0 auto",
           display: "flex",
           alignItems: "center",
           gap: 10,

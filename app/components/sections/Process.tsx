@@ -28,7 +28,7 @@ const STEPS = [
 
 export default function Process() {
   return (
-    <section style={{ padding: "60px 20px", maxWidth: 640, margin: "0 auto" }}>
+    <section className="section-wrap" style={{ padding: "60px 20px" }}>
       <div style={{ textAlign: "center", marginBottom: 40 }}>
         <div
           style={{

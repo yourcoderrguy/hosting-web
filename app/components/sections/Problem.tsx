@@ -20,7 +20,7 @@ const PROBLEMS = [
 
 export default function Problem() {
   return (
-    <section style={{ padding: "60px 20px", maxWidth: 640, margin: "0 auto" }}>
+    <section className="section-wrap" style={{ padding: "60px 20px" }}>
       <div
         style={{
           padding: 28,

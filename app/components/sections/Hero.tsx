@@ -7,13 +7,12 @@ import HeroVideo from "../ui/HeroVideo";
 export default function Hero() {
   return (
     <section
+      className="section-wrap"
       style={{
         paddingTop: 100,
         paddingBottom: 60,
         paddingLeft: 20,
         paddingRight: 20,
-        maxWidth: 600,
-        margin: "0 auto",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

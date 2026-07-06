@@ -8,7 +8,7 @@ const REVIEW_IMAGES = ["/review-1.png", "/review-2.png", "/review-3.png"];
 export default function Proof() {
   return (
     <section style={{ padding: "80px 20px", background: "#080d0a" }} id="proof">
-      <div style={{ maxWidth: 640, margin: "0 auto" }}>
+      <div className="section-wrap">
         <div style={{ textAlign: "center", marginBottom: 48 }}>
           <div
             style={{
@@ -34,7 +34,6 @@ export default function Proof() {
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
             gap: 12,
-            maxWidth: 600,
             margin: "0 auto 60px",
           }}
         >

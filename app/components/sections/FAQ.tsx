@@ -22,7 +22,7 @@ const AI_PROS = [
 
 export default function FAQ() {
   return (
-    <section style={{ padding: "60px 20px", maxWidth: 640, margin: "0 auto" }}>
+    <section className="section-wrap" style={{ padding: "60px 20px" }}>
       {/* Is This Right For You? */}
       <div style={{ textAlign: "center", marginBottom: 40 }}>
         <h2 style={{ fontSize: "clamp(1.6rem,5.5vw,2.2rem)", fontWeight: 900, marginBottom: 12 }}>

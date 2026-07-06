@@ -28,7 +28,7 @@ const TIER3_FEATURES = [
 
 export default function Pricing() {
   return (
-    <section style={{ padding: "80px 20px", maxWidth: 640, margin: "0 auto" }} id="packages">
+    <section className="section-wrap" style={{ padding: "80px 20px" }} id="packages">
       <div style={{ textAlign: "center", marginBottom: 48 }}>
         <div
           style={{
@@ -51,7 +51,7 @@ export default function Pricing() {
         </p>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div className="grid-3">
         {/* TIER 1 */}
         <div style={{ padding: 28, borderRadius: 24, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}>
           <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", color: "#64748b", textTransform: "uppercase", marginBottom: 6 }}>

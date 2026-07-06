@@ -26,7 +26,7 @@ const FEATURES = [
 
 export default function Features() {
   return (
-    <section style={{ padding: "60px 20px", maxWidth: 640, margin: "0 auto" }}>
+    <section className="section-wrap" style={{ padding: "60px 20px" }}>
       <div style={{ textAlign: "center", marginBottom: 40 }}>
         <div
           style={{
@@ -47,7 +47,7 @@ export default function Features() {
           No tech jargon. Plain English. Here&apos;s what we build for you and why it makes you money.
         </p>
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div className="grid-3">
         {FEATURES.map((item, i) => (
           <div
             key={i}

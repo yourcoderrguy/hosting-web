@@ -46,6 +46,12 @@ const VARIANT_STYLES: Record<Variant, React.CSSProperties> = {
   },
 };
 
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void;
+  }
+}
+
 export default function Button({
   href,
   children,
@@ -62,6 +68,11 @@ export default function Button({
       href={href}
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
+      onClick={() => {
+        if (typeof window !== "undefined" && typeof window.fbq === "function") {
+          window.fbq("track", "Lead");
+        }
+      }}
       style={{
         display: "inline-flex",
         alignItems: "center",
