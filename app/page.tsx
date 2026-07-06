@@ -26,6 +26,8 @@ export default function LandingPage() {
           fontFamily: "sans-serif",
           background: "#050505",
           color: "#f8fafc",
+          overflowX: "hidden",
+          overflowY: "hidden",
         }}
       >
         {/* Background Glow Orbs — radial-gradient, not filter:blur().
