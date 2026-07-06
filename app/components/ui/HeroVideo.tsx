@@ -7,34 +7,41 @@ const SRC = "/intro.mp4";
 let _vidCounter = 0;
 
 /*
-  Same fix as TestimonialVideo: a permanently mounted <video> element
-  (even paused, even off-screen) keeps a hardware decode/compositing
-  surface allocated. On some Android GPU drivers that surface's memory
-  doesn't get cleared as you scroll, so stale frame data bleeds into
-  whatever scrolls into that screen region next — the "broken TV"
-  static/ghosting effect. Previously this component only paused on
-  scroll-out instead of unmounting, which is what let the glitch
-  survive all the way down past the testimonials/FAQ section.
-
-  Fix: the <video> only exists in the DOM while actually playing.
-  Otherwise it's a plain <img> from a canvas-captured poster frame.
-  Playing, pausing, ending, or scrolling out of view all fully
-  UNMOUNT the <video> so its decode surface is torn down completely.
+  Same fix as TestimonialVideo. Pass a real static `poster` image (a
+  JPG generated once with ffmpeg) via the POSTER constant below and
+  this component never touches the video decoder until the person
+  taps play. If no poster is set, it falls back to an off-DOM canvas
+  capture — using a Blob object URL rather than a base64 data: URI,
+  since data URIs are larger and slower to paint on low-end Android
+  GPUs. Either way, the <video> element itself only exists in the DOM
+  while actually playing; pausing, ending, or scrolling out of view
+  all fully UNMOUNT it so its decode surface is torn down completely.
 */
+const POSTER: string | undefined = undefined; // e.g. "/intro-poster.jpg"
+
 export default function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const idRef = useRef<string>(`vid-${++_vidCounter}`);
   const [playing, setPlaying] = useState(false);
-  const [posterUrl, setPosterUrl] = useState<string | null>(null);
-  const [thumbReady, setThumbReady] = useState(false);
+  const [posterUrl, setPosterUrl] = useState<string | null>(POSTER ?? null);
+  const [thumbReady, setThumbReady] = useState(Boolean(POSTER));
+  const [posterFailed, setPosterFailed] = useState(false);
   const ctx = useVideoContext();
 
-  /* Capture one poster frame off-DOM, then discard the loader video
-     entirely. This is the only time a decoder touches this clip
-     before the person actually taps play. */
+  const usingStaticPoster = Boolean(POSTER) && !posterFailed;
+
+  const handlePosterError = () => {
+    setPosterFailed(true);
+    setPosterUrl(null);
+    setThumbReady(false);
+  };
+
+  /* Only runs when no working static POSTER is available. */
   useEffect(() => {
+    if (usingStaticPoster) return;
     let cancelled = false;
+    let objectUrl: string | null = null;
     const loader = document.createElement("video");
     loader.src = SRC;
     loader.preload = "metadata";
@@ -49,7 +56,15 @@ export default function HeroVideo() {
         canvas.height = loader.videoHeight || 640;
         const c2d = canvas.getContext("2d");
         c2d?.drawImage(loader, 0, 0, canvas.width, canvas.height);
-        setPosterUrl(canvas.toDataURL("image/jpeg", 0.72));
+        canvas.toBlob(
+          (blob) => {
+            if (cancelled || !blob) return;
+            objectUrl = URL.createObjectURL(blob);
+            setPosterUrl(objectUrl);
+          },
+          "image/jpeg",
+          0.72
+        );
       } catch (_) {
         // Ignore — falls back to a plain dark card with the play button.
       }
@@ -78,8 +93,9 @@ export default function HeroVideo() {
       loader.removeEventListener("loadeddata", onLoaded);
       loader.removeEventListener("seeked", capture);
       loader.src = "";
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
-  }, []);
+  }, [usingStaticPoster]);
 
   /* Register with the shared "only one video plays at a time" context
      only while this card's <video> actually exists in the DOM. */
@@ -121,6 +137,7 @@ export default function HeroVideo() {
         background:
           "linear-gradient(135deg,rgba(16,185,129,0.35),rgba(6,182,212,0.2))",
         boxShadow: "0 0 60px rgba(16,185,129,0.15)",
+        isolation: "isolate",
       }}
     >
       <div
@@ -132,6 +149,10 @@ export default function HeroVideo() {
           aspectRatio: "9/16",
           position: "relative",
           cursor: !playing && thumbReady ? "pointer" : "default",
+          transform: "translateZ(0)",
+          WebkitBackfaceVisibility: "hidden",
+          backfaceVisibility: "hidden",
+          contain: "paint",
         }}
       >
         {playing ? (
@@ -155,6 +176,8 @@ export default function HeroVideo() {
           <img
             src={posterUrl}
             alt="Intro video preview"
+            decoding="async"
+            onError={usingStaticPoster ? handlePosterError : undefined}
             style={{
               position: "absolute",
               inset: 0,

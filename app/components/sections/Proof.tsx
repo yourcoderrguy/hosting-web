@@ -35,16 +35,23 @@ export default function Proof() {
             gridTemplateColumns: "1fr 1fr",
             gap: 12,
             margin: "0 auto 60px",
+            isolation: "isolate",
           }}
         >
           <TestimonialVideo
             src="/cre8ifhub.mp4"
+            poster="/cre8ifhub-poster.jpg"
             title="Creative Hub Founder"
             subtitle="Automated Client Infrastructure"
           />
-          <TestimonialVideo src="/benedicta.mp4" title="Benedicta" subtitle="3x Repeat Client" />
+          <TestimonialVideo
+            src="/benedicta.mp4"
+            poster="/benedicta-poster.jpg"
+            title="Benedicta"
+            subtitle="3x Repeat Client"
+          />
         </div>
-        <div>
+        <div style={{ contain: "layout paint" }}>
           <div
             style={{
               textAlign: "center",

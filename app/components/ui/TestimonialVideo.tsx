@@ -16,27 +16,53 @@ let _vidCounter = 0;
   scrolls into that screen region next — the doubled "ghost text" and
   static/scan-line artifacts you're seeing.
 
-  Fix: the <video> element only exists in the DOM while a clip is
-  actually playing. Everything else (thumbnail state) is a plain
-  <img> built from a canvas-captured frame. Playing, pausing, ending,
-  or scrolling out of view all fully UNMOUNT the <video>, so its
-  surface is torn down completely instead of being reused.
+  Fix, in order of preference:
+  1. Pass a real `poster` image (a JPG you generate once, e.g. with
+     ffmpeg). Then this component never touches the video decoder at
+     all until the person taps play — it's just a plain <img>.
+  2. If no poster is given, it falls back to capturing one off-DOM
+     frame via canvas. That fallback now uses a Blob object URL
+     instead of a base64 data: URI — data URIs are ~33% bigger and
+     have to be decoded inline on every paint, which is measurably
+     slower on low-end Android GPUs. An object URL points at an
+     already-decoded resource, so it paints like a normal image.
+
+  Either way, the <video> element itself only exists in the DOM while
+  a clip is actually playing. Playing, pausing, ending, or scrolling
+  out of view all fully UNMOUNT it, so its decode surface is torn
+  down completely instead of being reused.
 */
-export default function TestimonialVideo({ src, title, subtitle }: TestimonialVideoProps) {
+export default function TestimonialVideo({ src, title, subtitle, poster }: TestimonialVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const idRef = useRef<string>(`vid-${++_vidCounter}`);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
-  const [posterUrl, setPosterUrl] = useState<string | null>(null);
-  const [thumbReady, setThumbReady] = useState(false);
+  const [posterUrl, setPosterUrl] = useState<string | null>(poster ?? null);
+  const [thumbReady, setThumbReady] = useState(Boolean(poster));
+  const [posterFailed, setPosterFailed] = useState(false);
   const ctx = useVideoContext();
 
-  /* Capture one poster frame off-DOM, then discard the loader video
-     entirely. This is the only time a decoder touches this clip
-     before the person actually taps play. */
+  /* If a static poster prop is missing or 404s, self-heal instead of
+     showing a broken image forever: fall through to the runtime
+     capture path below. */
+  const usingStaticPoster = Boolean(poster) && !posterFailed;
+
+  const handlePosterError = () => {
+    setPosterFailed(true);
+    setPosterUrl(null);
+    setThumbReady(false);
+  };
+
+  /* Only runs when no working static poster is available. Captures
+     one off-DOM frame, converts it to a Blob object URL, then fully
+     discards the loader video. This is the only time (in the
+     fallback path) that a decoder touches this clip before the
+     person actually taps play. */
   useEffect(() => {
+    if (usingStaticPoster) return; // static poster already in place, skip entirely
     let cancelled = false;
+    let objectUrl: string | null = null;
     const loader = document.createElement("video");
     loader.src = src;
     loader.preload = "metadata";
@@ -51,7 +77,15 @@ export default function TestimonialVideo({ src, title, subtitle }: TestimonialVi
         canvas.height = loader.videoHeight || 640;
         const c2d = canvas.getContext("2d");
         c2d?.drawImage(loader, 0, 0, canvas.width, canvas.height);
-        setPosterUrl(canvas.toDataURL("image/jpeg", 0.72));
+        canvas.toBlob(
+          (blob) => {
+            if (cancelled || !blob) return;
+            objectUrl = URL.createObjectURL(blob);
+            setPosterUrl(objectUrl);
+          },
+          "image/jpeg",
+          0.72
+        );
       } catch (_) {
         // Ignore — falls back to a plain dark card with the play button.
       }
@@ -80,8 +114,9 @@ export default function TestimonialVideo({ src, title, subtitle }: TestimonialVi
       loader.removeEventListener("loadeddata", onLoaded);
       loader.removeEventListener("seeked", capture);
       loader.src = "";
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
-  }, [src]);
+  }, [src, usingStaticPoster]);
 
   /* Register with the shared "only one video plays at a time" context
      only while this card's <video> actually exists in the DOM. */
@@ -127,6 +162,8 @@ export default function TestimonialVideo({ src, title, subtitle }: TestimonialVi
         flexDirection: "column",
         background: "#0d1a14",
         border: "1px solid rgba(255,255,255,0.06)",
+        contain: "layout paint",
+        isolation: "isolate",
       }}
     >
       <div
@@ -139,6 +176,10 @@ export default function TestimonialVideo({ src, title, subtitle }: TestimonialVi
           background: "#000",
           aspectRatio: "9/16",
           cursor: !playing && thumbReady ? "pointer" : "default",
+          transform: "translateZ(0)",
+          WebkitBackfaceVisibility: "hidden",
+          backfaceVisibility: "hidden",
+          contain: "paint",
         }}
       >
         {playing ? (
@@ -162,6 +203,8 @@ export default function TestimonialVideo({ src, title, subtitle }: TestimonialVi
           <img
             src={posterUrl}
             alt={title}
+            decoding="async"
+            onError={usingStaticPoster ? handlePosterError : undefined}
             style={{
               position: "absolute",
               inset: 0,
