@@ -1,0 +1,16 @@
+<svg viewBox="0 0 760 190" xmlns="http://www.w3.org/2000/svg">
+  <defs><linearGradient id="cg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#2EE9F0"/><stop offset="100%" stop-color="#047487"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="760" height="190" fill="#081A21"/>
+  <g transform="translate(14,6) scale(0.82)">
+    <polygon points="100,8 187.5,71.57 154.08,174.43 45.92,174.43 12.5,71.57" fill="none" stroke="url(#cg)" stroke-width="9" stroke-linejoin="round"/>
+    <path d="M128,56 L70,56 L70,98 L100,98 A 21,21 0 1 1 100,140" fill="none" stroke="url(#cg)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g transform="translate(200,0)">
+    <text x="0" y="112" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-weight="700"
+          font-size="80" fill="#FFFFFF" letter-spacing="0.5">OP5</text>
+    <text x="3" y="150" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-weight="500"
+          font-size="22" fill="#2EE9F0" letter-spacing="7">TECHNOLOGIES</text>
+  </g>
+</svg>

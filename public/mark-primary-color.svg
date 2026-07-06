@@ -1,0 +1,8 @@
+<svg viewBox="0 0 200 182" xmlns="http://www.w3.org/2000/svg">
+  <defs><linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#2EE9F0"/><stop offset="100%" stop-color="#047487"/>
+  </linearGradient></defs>
+  
+  <polygon points="100,8 187.5,71.57 154.08,174.43 45.92,174.43 12.5,71.57" fill="none" stroke="url(#cyanGrad)" stroke-width="9" stroke-linejoin="round"/>
+  <path d="M128,56 L70,56 L70,98 L100,98 A 21,21 0 1 1 100,140" fill="none" stroke="url(#cyanGrad)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

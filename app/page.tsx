@@ -24,7 +24,6 @@ export default function LandingPage() {
           minHeight: "100vh",
           position: "relative",
           fontFamily: "sans-serif",
-          overflowX: "hidden",
           background: "#050505",
           color: "#f8fafc",
         }}
