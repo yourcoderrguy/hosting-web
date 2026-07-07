@@ -2,16 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  overflow-x: hidden;
-  background: #050505;
-}
-
+/* Combine html and body to prevent duplicate scroll contexts */
+html,
 body {
   padding: 0;
   margin: 0;
   width: 100%;
+  max-width: 100vw;
   background: #050505;
+  overflow-x: hidden;
 }
 
 * {
