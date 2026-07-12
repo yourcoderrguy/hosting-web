@@ -6,7 +6,11 @@ type Variant = "primary" | "outline" | "light";
 type Size = "sm" | "md" | "lg";
 
 interface ButtonProps {
-  href: string;
+  /** Omit href (and pass onClick instead) to render this as a trigger
+   *  button — used by the Pricing tiers to open the lead modal instead
+   *  of navigating straight to WhatsApp. */
+  href?: string;
+  onClick?: () => void;
   children: React.ReactNode;
   icon?: React.ReactNode;
   variant?: Variant;
@@ -54,6 +58,7 @@ declare global {
 
 export default function Button({
   href,
+  onClick,
   children,
   icon,
   variant = "primary",
@@ -63,33 +68,51 @@ export default function Button({
   nowrap = false,
   style,
 }: ButtonProps) {
+  const sharedStyle: React.CSSProperties = {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    width: fullWidth ? "100%" : undefined,
+    maxWidth: "100%",
+    boxSizing: "border-box",
+    borderRadius: 99,
+    border: "none",
+    textDecoration: "none",
+    whiteSpace: nowrap ? "nowrap" : "normal",
+    textAlign: "center",
+    lineHeight: 1.35,
+    cursor: "pointer",
+    ...SIZE_STYLES[size],
+    ...VARIANT_STYLES[variant],
+    ...style,
+  };
+
+  if (!href) {
+    return (
+      <button type="button" onClick={onClick} style={sharedStyle}>
+        {icon}
+        {children}
+      </button>
+    );
+  }
+
   return (
     <a
       href={href}
-      target={external ? "_blank" : undefined}
+      // Deliberately NOT target="_blank". Meta's in-app browser (the
+      // webview Facebook/Instagram open when someone taps your ad) is
+      // unreliable at handing a new-tab wa.me link off to the real
+      // WhatsApp app — this is the single most common reason ad clicks
+      // don't turn into WhatsApp chats. Navigating in the same tab is
+      // what reliably triggers the OS-level WhatsApp handoff.
       rel={external ? "noopener noreferrer" : undefined}
       onClick={() => {
         if (typeof window !== "undefined" && typeof window.fbq === "function") {
           window.fbq("track", "Lead");
         }
       }}
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 8,
-        width: fullWidth ? "100%" : undefined,
-        maxWidth: "100%",
-        boxSizing: "border-box",
-        borderRadius: 99,
-        textDecoration: "none",
-        whiteSpace: nowrap ? "nowrap" : "normal",
-        textAlign: "center",
-        lineHeight: 1.35,
-        ...SIZE_STYLES[size],
-        ...VARIANT_STYLES[variant],
-        ...style,
-      }}
+      style={sharedStyle}
     >
       {icon}
       {children}

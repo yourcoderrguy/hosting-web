@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Check, MessageCircle, Star } from "lucide-react";
 import { WA } from "../../constants/whatsapp";
 import Button from "../ui/Button";
+import LeadModal from "../ui/LeadModal";
 
 const TIER1_FEATURES = [
   "A fast website that works perfectly on any phone",
@@ -27,7 +28,10 @@ const TIER3_FEATURES = [
 ];
 
 export default function Pricing() {
+  const [modal, setModal] = useState<{ waLink: string; packageName: string } | null>(null);
+
   return (
+    <>
     <section className="section-wrap" style={{ padding: "80px 20px" }} id="packages">
       <div style={{ textAlign: "center", marginBottom: 48 }}>
         <div
@@ -81,7 +85,13 @@ export default function Pricing() {
             Best for: Businesses that currently have no website, or have one that isn&apos;t working.
             You want people to take you seriously and be able to reach you easily.
           </p>
-          <Button href={WA.tier1} variant="outline" size="md" fullWidth icon={<MessageCircle style={{ width: 16, height: 16 }} />}>
+          <Button
+            onClick={() => setModal({ waLink: WA.tier1, packageName: "The Foundation" })}
+            variant="outline"
+            size="md"
+            fullWidth
+            icon={<MessageCircle style={{ width: 16, height: 16 }} />}
+          >
             Let&apos;s Talk About This Option
           </Button>
         </div>
@@ -152,7 +162,13 @@ export default function Pricing() {
             Best for: Business owners actively getting enquiries but losing some because they can&apos;t
             respond fast enough. This stops the leak completely.
           </p>
-          <Button href={WA.tier2} variant="primary" size="lg" fullWidth icon={<MessageCircle style={{ width: 18, height: 18 }} />}>
+          <Button
+            onClick={() => setModal({ waLink: WA.tier2, packageName: "The Sales Machine" })}
+            variant="primary"
+            size="lg"
+            fullWidth
+            icon={<MessageCircle style={{ width: 18, height: 18 }} />}
+          >
             I Want This — Let&apos;s Build It
           </Button>
         </div>
@@ -191,11 +207,25 @@ export default function Pricing() {
             Best for: Business owners who already know their offer works and are ready to pour fuel
             on it. You want volume, speed, and a system that scales.
           </p>
-          <Button href={WA.tier3} variant="outline" size="md" fullWidth icon={<MessageCircle style={{ width: 16, height: 16 }} />}>
+          <Button
+            onClick={() => setModal({ waLink: WA.tier3, packageName: "The Growth System" })}
+            variant="outline"
+            size="md"
+            fullWidth
+            icon={<MessageCircle style={{ width: 16, height: 16 }} />}
+          >
             I&apos;m Ready to Scale — Let&apos;s Talk
           </Button>
         </div>
       </div>
     </section>
+
+      <LeadModal
+        open={modal !== null}
+        onClose={() => setModal(null)}
+        waLink={modal?.waLink ?? ""}
+        packageName={modal?.packageName ?? ""}
+      />
+    </>
   );
 }
