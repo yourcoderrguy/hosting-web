@@ -2,6 +2,7 @@
 
 import React from "react";
 import VideoProvider from "./components/VideoProvider";
+import LeadModalProvider from "./components/LeadModalProvider";
 import GlobalStyles from "./components/GlobalStyles";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
@@ -17,6 +18,7 @@ import FinalCTA from "./components/sections/FinalCTA";
 
 export default function LandingPage() {
   return (
+    <LeadModalProvider>
     <VideoProvider>
       <StickyBar />
       <main
@@ -26,7 +28,8 @@ export default function LandingPage() {
           fontFamily: "sans-serif",
           background: "#050505",
           color: "#f8fafc",
-          // overflowX: "hidden",
+          overflowX: "hidden",
+          overflowY: "hidden",
         }}
       >
         {/* Background Glow Orbs — radial-gradient, not filter:blur().
@@ -80,5 +83,6 @@ export default function LandingPage() {
         <GlobalStyles />
       </main>
     </VideoProvider>
+    </LeadModalProvider>
   );
 }

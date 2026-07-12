@@ -5,8 +5,11 @@ import Image from "next/image";
 import { MessageCircle } from "lucide-react";
 import { WA } from "../../constants/whatsapp";
 import Button from "../ui/Button";
+import { useLeadModal } from "../LeadModalProvider";
 
 export default function Header() {
+  const { openLeadModal } = useLeadModal();
+
   return (
     <header
       style={{
@@ -30,7 +33,7 @@ export default function Header() {
           style={{ height: 32, width: "auto" }}
         />
         <Button
-          href={WA.engineer}
+          onClick={() => openLeadModal(WA.engineer, "General Enquiry")}
           variant="outline"
           size="sm"
           nowrap

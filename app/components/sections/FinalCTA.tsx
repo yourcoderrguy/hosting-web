@@ -4,8 +4,11 @@ import React from "react";
 import { MessageCircle } from "lucide-react";
 import { WA } from "../../constants/whatsapp";
 import Button from "../ui/Button";
+import { useLeadModal } from "../LeadModalProvider";
 
 export default function FinalCTA() {
+  const { openLeadModal } = useLeadModal();
+
   return (
     <section style={{ padding: "60px 20px 100px", textAlign: "center" }}>
       <p
@@ -45,7 +48,7 @@ export default function FinalCTA() {
         see exactly how your business can respond automatically — even when you&apos;re away.
       </p>
       <Button
-        href={WA.talkDirectly}
+        onClick={() => openLeadModal(WA.talkDirectly, "General Enquiry")}
         variant="primary"
         size="lg"
         icon={<MessageCircle style={{ width: 20, height: 20 }} />}

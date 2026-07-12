@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Check, MessageCircle, Star } from "lucide-react";
 import { WA } from "../../constants/whatsapp";
 import Button from "../ui/Button";
-import LeadModal from "../ui/LeadModal";
+import { useLeadModal } from "../LeadModalProvider";
 
 const TIER1_FEATURES = [
   "A fast website that works perfectly on any phone",
@@ -28,7 +28,7 @@ const TIER3_FEATURES = [
 ];
 
 export default function Pricing() {
-  const [modal, setModal] = useState<{ waLink: string; packageName: string } | null>(null);
+  const { openLeadModal } = useLeadModal();
 
   return (
     <>
@@ -86,7 +86,7 @@ export default function Pricing() {
             You want people to take you seriously and be able to reach you easily.
           </p>
           <Button
-            onClick={() => setModal({ waLink: WA.tier1, packageName: "The Foundation" })}
+            onClick={() => openLeadModal(WA.tier1, "The Foundation")}
             variant="outline"
             size="md"
             fullWidth
@@ -163,7 +163,7 @@ export default function Pricing() {
             respond fast enough. This stops the leak completely.
           </p>
           <Button
-            onClick={() => setModal({ waLink: WA.tier2, packageName: "The Sales Machine" })}
+            onClick={() => openLeadModal(WA.tier2, "The Sales Machine")}
             variant="primary"
             size="lg"
             fullWidth
@@ -208,7 +208,7 @@ export default function Pricing() {
             on it. You want volume, speed, and a system that scales.
           </p>
           <Button
-            onClick={() => setModal({ waLink: WA.tier3, packageName: "The Growth System" })}
+            onClick={() => openLeadModal(WA.tier3, "The Growth System")}
             variant="outline"
             size="md"
             fullWidth
@@ -219,13 +219,6 @@ export default function Pricing() {
         </div>
       </div>
     </section>
-
-      <LeadModal
-        open={modal !== null}
-        onClose={() => setModal(null)}
-        waLink={modal?.waLink ?? ""}
-        packageName={modal?.packageName ?? ""}
-      />
     </>
   );
 }

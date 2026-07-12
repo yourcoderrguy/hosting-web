@@ -3,8 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { MessageCircle, X } from "lucide-react";
 import { WA } from "../../constants/whatsapp";
+import { useLeadModal } from "../LeadModalProvider";
 
 export default function StickyBar() {
+  const { openLeadModal } = useLeadModal();
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismiss] = useState(false);
 
@@ -61,9 +63,9 @@ export default function StickyBar() {
           </p>
         </div>
         <a
-          href={WA.stickyBar}
-          target="_blank"
-          rel="noopener noreferrer"
+          onClick={() => openLeadModal(WA.stickyBar, "Quick Question")}
+          role="button"
+          tabIndex={0}
           style={{
             display: "flex",
             alignItems: "center",
@@ -77,6 +79,7 @@ export default function StickyBar() {
             textDecoration: "none",
             whiteSpace: "nowrap",
             flexShrink: 0,
+            cursor: "pointer",
             boxShadow: "0 4px 16px rgba(16,185,129,0.35)",
           }}
         >

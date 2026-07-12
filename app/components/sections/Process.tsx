@@ -4,6 +4,7 @@ import React from "react";
 import { MessageCircle } from "lucide-react";
 import { WA } from "../../constants/whatsapp";
 import Button from "../ui/Button";
+import { useLeadModal } from "../LeadModalProvider";
 
 const STEPS = [
   {
@@ -27,6 +28,8 @@ const STEPS = [
 ];
 
 export default function Process() {
+  const { openLeadModal } = useLeadModal();
+
   return (
     <section className="section-wrap" style={{ padding: "60px 20px" }}>
       <div style={{ textAlign: "center", marginBottom: 40 }}>
@@ -114,7 +117,7 @@ export default function Process() {
       </div>
       <div style={{ marginTop: 40, textAlign: "center" }}>
         <Button
-          href={WA.strategyCall}
+          onClick={() => openLeadModal(WA.strategyCall, "Strategy Call")}
           variant="primary"
           icon={<MessageCircle style={{ width: 18, height: 18 }} />}
         >
