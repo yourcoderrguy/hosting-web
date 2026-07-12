@@ -32,7 +32,7 @@ export default function FinalCTA() {
           lineHeight: 1.3,
         }}
       >
-        Potential customers visit your website, ask questions, and leave — then buy from someone
+        Potential customers visit your website, ask questions, and leave then buy from someone
         else.
       </h2>
       <p
@@ -45,7 +45,7 @@ export default function FinalCTA() {
         }}
       >
         Don&apos;t let another customer slip away because nobody replied. Book a free strategy call and
-        see exactly how your business can respond automatically — even when you&apos;re away.
+        see exactly how your business can respond automatically even when you&apos;re away.
       </p>
       <Button
         onClick={() => openLeadModal(WA.talkDirectly, "General Enquiry")}

@@ -51,7 +51,7 @@ export default function FAQ() {
           </div>
         ))}
         <p style={{ margin: "8px 0 0", fontSize: 14, color: "#34d399", fontWeight: 600 }}>
-          If that sounds like you — you&apos;re exactly who we built this for.
+          If that sounds like you you&apos;re exactly who we built this for.
         </p>
       </div>
 
@@ -61,7 +61,7 @@ export default function FAQ() {
           Why Not Just Hire A Virtual Assistant?
         </h2>
         <p style={{ color: "#94a3b8", fontSize: 15, maxWidth: 420, margin: "0 auto" }}>
-          It reframes the cost — this is an investment, not an expense.
+          It reframes the cost this is an investment, not an expense.
         </p>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>

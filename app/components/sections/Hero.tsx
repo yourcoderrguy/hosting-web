@@ -81,7 +81,7 @@ export default function Hero() {
       >
         Stop staying glued to your phone because of customer enquiries. Go about your day while
         your website instantly answers questions, qualifies leads, and continues the conversation
-        on WhatsApp — even while you&apos;re asleep.
+        on WhatsApp even while you&apos;re asleep.
       </p>
       <a
         href="#packages"
