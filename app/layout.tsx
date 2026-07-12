@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 };
 
 const META_PIXEL_ID = "895037256987862";
+const GA_MEASUREMENT_ID = "G-TS5021V1QJ";
 
 export default function RootLayout({
   children,
@@ -23,6 +24,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        {/* Google Analytics (GA4) */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
         {/* Meta Pixel */}
         <Script id="meta-pixel" strategy="afterInteractive">
           {`

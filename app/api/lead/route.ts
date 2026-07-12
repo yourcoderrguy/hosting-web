@@ -42,20 +42,35 @@ export async function POST(req: Request) {
       console.warn("Supabase env vars missing — skipping DB insert.");
     }
 
-    // Email notification — best-effort, does not block or fail the request.
+    // Email notification. Awaited (not fire-and-forget) — on
+    // serverless, the function can be frozen/killed the instant the
+    // response is returned, which was silently dropping most of
+    // these emails before. Still wrapped so a Resend failure never
+    // fails the request for the user.
+    let emailError: string | null = null;
     if (process.env.RESEND_API_KEY && process.env.LEAD_NOTIFY_EMAIL) {
       const resend = new Resend(process.env.RESEND_API_KEY);
-      resend.emails
-        .send({
+      try {
+        const { error: sendError } = await resend.emails.send({
           from: process.env.LEAD_FROM_EMAIL || "OP5 Leads <onboarding@resend.dev>",
           to: process.env.LEAD_NOTIFY_EMAIL,
           subject: `New lead: ${name} — ${pkg ?? "General enquiry"}`,
           text: `Name: ${name}\nEmail: ${email}\nPackage: ${pkg ?? "N/A"}\nSource: ${source}`,
-        })
-        .catch((err) => console.error("Resend error:", err));
+        });
+        if (sendError) {
+          console.error("Resend error:", sendError);
+          emailError = sendError.message;
+        }
+      } catch (err) {
+        console.error("Resend threw:", err);
+        emailError = err instanceof Error ? err.message : "Unknown email error";
+      }
+    } else {
+      console.warn("Resend env vars missing — skipping email notification.");
+      emailError = "RESEND_API_KEY or LEAD_NOTIFY_EMAIL not configured";
     }
 
-    return NextResponse.json({ ok: true, dbError });
+    return NextResponse.json({ ok: true, dbError, emailError });
   } catch (err) {
     console.error("Lead route error:", err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });

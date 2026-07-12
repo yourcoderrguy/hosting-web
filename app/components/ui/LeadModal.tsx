@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 
 interface LeadModalProps {
@@ -14,6 +14,28 @@ export default function LeadModal({ open, onClose, waLink, packageName }: LeadMo
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const firstInputRef = useRef<HTMLInputElement>(null);
+
+  // Lock background scroll on mobile while the modal + keyboard are
+  // open, focus the first input so the keyboard pops up immediately,
+  // and let Escape close it (desktop convenience).
+  useEffect(() => {
+    if (!open) return;
+
+    document.body.classList.add("modal-open");
+    const focusTimer = setTimeout(() => firstInputRef.current?.focus(), 50);
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.classList.remove("modal-open");
+      clearTimeout(focusTimer);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open, onClose]);
 
   if (!open) return null;
 
@@ -32,63 +54,54 @@ export default function LeadModal({ open, onClose, waLink, packageName }: LeadMo
     if (typeof window !== "undefined" && typeof window.fbq === "function") {
       window.fbq("track", "Lead");
     }
-
-    // 1. Redirect FIRST, synchronously, in the exact same click — this is
-    //    what keeps the WhatsApp handoff reliable (same-tab navigation,
-    //    no delay before it). Everything after this line still runs,
-    //    because the browser doesn't tear down the page until the new
-    //    navigation actually completes.
-    window.location.href = waLink;
-
-    // 2. Save the lead in the background. `keepalive: true` is what lets
-    //    this request survive the page navigating away — without it, a
-    //    normal fetch gets silently cancelled the instant location changes.
-    fetch("/api/lead", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: name.trim(),
-        email: email.trim(),
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+      window.gtag("event", "generate_lead", {
         package: packageName,
         source: "pricing_modal",
-      }),
-      keepalive: true,
-    }).catch(() => {
-      /* best-effort — the WhatsApp redirect already happened either way */
+      });
+    }
+
+    const payload = JSON.stringify({
+      name: name.trim(),
+      email: email.trim(),
+      package: packageName,
+      source: "pricing_modal",
     });
+
+    // sendBeacon is purpose-built for "fire this request, then leave
+    // the page" — the browser guarantees delivery even as navigation
+    // happens right after. fetch(..., { keepalive: true }) is NOT
+    // reliably honored across mobile browsers in this exact
+    // situation (that's why leads were being dropped and only one
+    // email ever landed in the inbox). Fall back to keepalive fetch
+    // only if sendBeacon isn't available.
+    let sent = false;
+    if (typeof navigator !== "undefined" && "sendBeacon" in navigator) {
+      const blob = new Blob([payload], { type: "application/json" });
+      sent = navigator.sendBeacon("/api/lead", blob);
+    }
+    if (!sent) {
+      fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+        keepalive: true,
+      }).catch(() => {
+        /* best-effort — the WhatsApp redirect happens either way */
+      });
+    }
+
+    // Redirect to WhatsApp last, after the beacon has already been
+    // handed off to the browser's network stack.
+    window.location.href = waLink;
   };
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      onClick={onClose}
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 300,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 20,
-        background: "rgba(0,0,0,0.65)",
-        backdropFilter: "blur(6px)",
-        WebkitBackdropFilter: "blur(6px)",
-      }}
-    >
+    <div role="dialog" aria-modal="true" onClick={onClose} className="lead-modal-overlay">
       <form
         onClick={(e) => e.stopPropagation()}
         onSubmit={handleSubmit}
-        style={{
-          width: "100%",
-          maxWidth: 380,
-          background: "rgba(13,13,13,0.92)",
-          border: "1px solid rgba(255,255,255,0.1)",
-          borderRadius: 24,
-          padding: 28,
-          position: "relative",
-          boxShadow: "0 20px 60px rgba(0,0,0,0.55)",
-        }}
+        className="lead-modal-card"
       >
         <button
           type="button"
@@ -113,7 +126,7 @@ export default function LeadModal({ open, onClose, waLink, packageName }: LeadMo
           <X style={{ width: 16, height: 16 }} />
         </button>
 
-        <h3 style={{ fontSize: 22, fontWeight: 800, marginBottom: 6, color: "#f8fafc" }}>
+        <h3 style={{ fontSize: 22, fontWeight: 800, marginBottom: 6, color: "#f8fafc", paddingRight: 32 }}>
           Let&apos;s Build Your Engine.
         </h3>
         <p style={{ fontSize: 13, color: "#94a3b8", marginBottom: 20, lineHeight: 1.5 }}>
@@ -122,19 +135,23 @@ export default function LeadModal({ open, onClose, waLink, packageName }: LeadMo
         </p>
 
         <input
+          ref={firstInputRef}
           type="text"
           placeholder="First name"
-          autoFocus
+          autoComplete="given-name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          style={inputStyle}
+          className="lead-modal-input"
         />
         <input
           type="email"
           placeholder="Best email"
+          autoComplete="email"
+          inputMode="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={{ ...inputStyle, marginBottom: error ? 8 : 20 }}
+          className="lead-modal-input"
+          style={{ marginBottom: error ? 8 : 20 }}
         />
         {error && <p style={{ color: "#f87171", fontSize: 12, marginBottom: 12 }}>{error}</p>}
 
@@ -159,21 +176,9 @@ export default function LeadModal({ open, onClose, waLink, packageName }: LeadMo
   );
 }
 
-const inputStyle: React.CSSProperties = {
-  width: "100%",
-  padding: "12px 14px",
-  borderRadius: 12,
-  border: "1px solid rgba(255,255,255,0.1)",
-  background: "rgba(255,255,255,0.04)",
-  color: "#f8fafc",
-  fontSize: 14,
-  marginBottom: 12,
-  outline: "none",
-  boxSizing: "border-box",
-};
-
 declare global {
   interface Window {
     fbq?: (...args: unknown[]) => void;
+    gtag?: (...args: unknown[]) => void;
   }
 }
